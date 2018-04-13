@@ -202,5 +202,7 @@ include_directories(
 
 # This will make sure that shebang lines are updated to use the specific Python
 # version used at configure time.
-catkin_install_python(PROGRAMS nodes/rl_agent_node
-                      DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+catkin_install_python(PROGRAMS 
+		      nodes/rl_agent_node
+                      nodes/test_ur5_node
+		      DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
