@@ -1,7 +1,5 @@
-<robot
-  name="screw_tool">
-  <link
-    name="screw_tool">
+<robot name="screw_tool">
+  <link name="screw_tool">
     <inertial>
       <origin
         xyz="0 1.10070897113899E-18 0.0125"
@@ -22,7 +20,7 @@
         rpy="1.5707963267949 0 0" />
       <geometry>
         <mesh
-          filename="package://screw_tool/meshes/screw_tool.STL" />
+          filename="$(find rl_gazebo_sim)/screw_tool/meshes/screw_tool.STL" />
       </geometry>
       <material
         name="">
@@ -36,7 +34,7 @@
         rpy="1.5707963267949 0 0" />
       <geometry>
         <mesh
-          filename="package://screw_tool/meshes/screw_tool.STL" />
+          filename="$(find rl_gazebo_sim)/screw_tool/meshes/screw_tool.STL" />
       </geometry>
     </collision>
   </link>
