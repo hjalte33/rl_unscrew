@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>rl_simulation</name>
+  <name>rl_gazebo_sim</name>
   <version>1.0.0</version>
   <description>
       Gazebo wrapper for the Universal UR5 robot arm.
