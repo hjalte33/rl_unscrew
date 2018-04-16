@@ -11,7 +11,7 @@
   </include>
 
   <!-- send robot urdf to param server -->
-  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find rl_simulation)/ur5_robot_w_tool/ur5_robot_w_tool.urdf.xacro'" />
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find rl_gazebo_sim)/ur5_robot_w_tool/ur5_robot_w_tool.urdf.xacro'" />
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 0.1" respawn="false" output="screen" />
