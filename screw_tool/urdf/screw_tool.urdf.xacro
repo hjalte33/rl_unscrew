@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="my_tool" params="parrent_link origin_xyz origin_rpy">
+    <link name="screw_tool">
+      <inertial>
+        <origin
+          xyz="0 1.10070897113899E-18 0.0125"
+          rpy="0 0 0" />
+        <mass
+          value="0.003112" />
+        <inertia
+          ixx="1.92911162272793E-07"
+          ixy="-2.89738441999895E-56"
+          ixz="4.73194412384896E-40"
+          iyy="1.92911162272793E-07"
+          iyz="-8.0369021048573E-24"
+          izz="6.1654255434581E-08" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="1.5707963267949 0 0" />
+        <geometry>
+          <mesh
+            filename="$(find rl_gazebo_sim)/screw_tool/meshes/screw_tool.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.79216 0.81961 0.93333 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="1.5707963267949 0 0" />
+        <geometry>
+          <mesh
+            filename="$(find rl_gazebo_sim)/screw_tool/meshes/screw_tool.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- add the tool to a parrent link -->
+    <joint name="${parrent_link}-screw_tool" type="revolute">
+      <parent link="${parrent_link}" />
+      <child link="screw_tool" /> 
+      <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
+      <axis xyz="0 0 1" />
+      <limit velocity="6.5" effort="1000" lower="0" upper="0" />  <!--This is a bugfix. Using fixed type joint causes problems with FT-sensor.-->
+      <dynamics damping="0.0" friction="0.0"/>
+    </joint> 
+
+    <!-- Activate the feedback -->
+    <gazebo reference="${parrent_link}-screw_tool">
+      <provideFeedback>true</provideFeedback>
+    </gazebo>
+    <!-- FT sensor -->
+    <gazebo>    
+      <plugin name="FTsensor_controller"    filename="libgazebo_ros_ft_sensor.so">
+        <updateRate>100.0</updateRate>
+        <topicName>FTsensor_topic</topicName>
+        <gaussianNoise>0.0</gaussianNoise>
+        <jointName>${parrent_link}-screw_tool</jointName>
+      </plugin>    
+    </gazebo>
+  </xacro:macro>  
+</robot>
