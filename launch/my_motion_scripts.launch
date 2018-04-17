@@ -1,0 +1,6 @@
+<launch>
+<node pkg="my_motion_scripts" type="planning_script.py" name="move_group_python_interface_tutorial" output="screen"> 
+
+
+</node>
+</launch>
