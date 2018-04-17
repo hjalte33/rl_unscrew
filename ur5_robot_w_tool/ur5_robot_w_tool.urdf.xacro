@@ -27,11 +27,27 @@
   <!-- tool -->
   <!-- give it a name and type -->
   <!-- add the tool to the end-effector -->
-  <joint name="screw_tool_joint" type="fixed">
+  <joint name="screw_tool_joint" type="revolute">
     <parent link="tool0" />
-    <child link="screw_tool" />
-    <origin xyz="0 0 0" rpy="0 0 0" />
+    <child link="screw_tool" /> 
+    <origin xyz="0 0 0.1" rpy="0 0 0" />
+    <limit velocity="6.5" effort="1000" lower="0" upper="0" />  <!--This is a bugfix. Using fixed type joint causes problems with FT-sensor.-->
   </joint> 
+
+
+  <!-- Activate the feedback 
+  <gazebo reference="wrist_3_link-tool0_fixed_joint">
+    <provideFeedback>true</provideFeedback>
+  </gazebo>-->
+  <!-- FT sensor 
+  <gazebo>    
+    <plugin name="FTsensor_controller"    filename="libgazebo_ros_ft_sensor.so">
+       <updateRate>100.0</updateRate>
+       <topicName>FTsensor_topic</topicName>
+       <gaussianNoise>0.0</gaussianNoise>
+       <jointName>wrist_3_link-tool0_fixed_joint</jointName>
+    </plugin>    
+  </gazebo>-->
   
 
 </robot>
