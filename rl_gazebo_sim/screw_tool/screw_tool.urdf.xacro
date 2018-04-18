@@ -1,0 +1,39 @@
+<?xml version="2.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="my_tool" params="parrent_link origin_xyz origin_rpy">
+    <!-- ft-sensor -->
+    <xacro:include filename="$(find rl_gazebo_sim)/urdf/ForceTorqueWithMount.urdf"/>
+
+    <!-- add the ft-senser -->
+    <joint name="${parrent_link}-ForceTorqueWithMount" type="revolute">
+      <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
+      <parent link="${parrent_link}"/>
+      <child link="ForceTorqueWithMount"/>
+      <axis xyz="0.0 0.0 1.0"/>
+       <limit velocity="6.5" effort="1000" lower="0" upper="0" />  <!--This is a bugfix. Using fixed type joint causes problems with FT-sensor.-->
+    </joint>>
+
+    <!-- Activate the feedback -->
+    <gazebo reference="${parrent_link}-ForceTorqueWithMount">
+      <provideFeedback>true</provideFeedback>
+    </gazebo>
+    <!-- FT sensor plugin-->    
+    <gazebo>    
+      <plugin name="FTsensor_controller"    filename="libgazebo_ros_ft_sensor.so">
+        <updateRate>100.0</updateRate>
+        <topicName>FTsensor_topic</topicName>
+        <gaussianNoise>0.0</gaussianNoise>
+        <jointName>${parrent_link}-ForceTorqueWithMount</jointName>
+      </plugin>    
+    </gazebo>
+
+  
+    <!-- Drill and mount 
+    <xacro:macro filename="$(find rl_gazebo_sim)/urdf/DrillAndMountAssembly.urdf"/>-->
+
+
+
+    
+  </xacro:macro>  
+</robot>
