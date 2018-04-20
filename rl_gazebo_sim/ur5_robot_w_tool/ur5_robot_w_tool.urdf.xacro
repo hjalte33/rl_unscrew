@@ -16,7 +16,7 @@
   <xacro:ur5_robot prefix="" joint_limited="false"/>
 
   <!-- tool -->
-  <xacro:my_tool parrent_link="wrist_3_link" origin_xyz="0 0.0823 0" origin_rpy="0 0 0"/>
+  <xacro:my_tool parrent_link="wrist_3_link" origin_xyz="0 0.0823 0" origin_rpy="${pi/-2.0} ${pi/-2.0} ${pi/-2.0}"/>
 
 
   <link name="world" />

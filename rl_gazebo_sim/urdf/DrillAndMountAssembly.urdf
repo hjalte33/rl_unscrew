@@ -1,7 +1,5 @@
-<robot
-  name="DrillAndMountAssembly">
-  <link
-    name="DrillAndMountAssembly">
+<robot name="DrillAndMountAssembly">
+  <link name="DrillAndMountAssembly">
     <inertial>
       <origin
         xyz="0 0 0"
