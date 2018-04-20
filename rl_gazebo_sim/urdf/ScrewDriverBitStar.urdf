@@ -22,7 +22,7 @@
         rpy="1.5707963267949 0 0" />
       <geometry>
         <mesh
-          filename="package://ScrewDriverBitStar/meshes/ScrewDriverBitStar.STL" />
+          filename="$(find rl_gazebo_sim)/meshes/ScrewDriverBitStar.STL" />
       </geometry>
       <material
         name="">
@@ -36,7 +36,7 @@
         rpy="1.5707963267949 0 0" />
       <geometry>
         <mesh
-          filename="package://ScrewDriverBitStar/meshes/ScrewDriverBitStar.STL" />
+          filename="$(find rl_gazebo_sim)/meshes/ScrewDriverBitStar.STL" />
       </geometry>
     </collision>
   </link>

@@ -34,13 +34,26 @@
 
     <!-- Add the drill to the chain -->
     <joint name="ForceTorqueWithMount-DrillAndMountAssembly" type="fixed">
-      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+      <origin xyz="0 -0.06342 0" rpy="0.0 ${pi/4} 0.0"/>
       <parent link="ForceTorqueWithMount"/>
       <child link="DrillAndMountAssembly"/>
       <axis xyz="0.0 0.0 0.0"/>
       <limit lower="0.0" upper="0.0" effort="0.0" velocity="0.0"/>
     </joint>
 
+    <!-- include the screw bit-->
+    <xacro:include filename="$(find rl_gazebo_sim)/urdf/ScrewDriverBitStar.urdf"/>
+
+    <!-- add the screw bit to the screw machine-->
+    <joint name="DrillAndMountAssembly-ScrewDriverBitStar" type="revolute">
+      <origin xyz="0.0 -0.157 0.0" rpy="0.0 0.0 0.0"/>
+      <parent link="DrillAndMountAssembly"/>
+      <child link="ScrewDriverBitStar"/>
+      <axis xyz="0.0 0.0 1"/>
+      <limit effort="0.0" velocity="0.0"/>
+    </joint>
+
     
-  </xacro:macro>  
+  </xacro:macro>  0.0
 </robot>
+
