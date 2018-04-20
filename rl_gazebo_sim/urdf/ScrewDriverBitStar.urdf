@@ -1,7 +1,5 @@
-<robot
-  name="ScrewDriverBitStar">
-  <link
-    name="ScrewDriverBitStar">
+<robot  name="ScrewDriverBitStar">
+  <link   name="ScrewDriverBitStar">
     <inertial>
       <origin
         xyz="0 0 0"
