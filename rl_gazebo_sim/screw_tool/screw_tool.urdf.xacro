@@ -47,11 +47,12 @@
 
     <!-- add the screw bit to the screw machine-->
     <joint name="ForceTorqueWithMount-ScrewDriverBitStar" type="revolute">
-      <origin xyz="0 -0.19652 0" rpy="0 0 0" />
+      <origin xyz="0 -0.22042 0" rpy="0 0 0" /> <!--sunken 5mm in to the bit holder -->
       <parent link="ForceTorqueWithMount"/>
       <child link="ScrewDriverBitStar"/>
-      <axis xyz="0.0 0.0 1.0"/>
-      <limit velocity="6.5" effort="1000" lower="0" upper="0" />     </joint>
+      <axis xyz="0 1 0"/>
+      <limit velocity="1000" effort="1" lower="-1e+16" upper="1e+16"/>     
+      </joint>
 
   </xacro:macro>
 </robot>
