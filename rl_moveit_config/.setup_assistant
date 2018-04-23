@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: rl_gazebo_sim
+    relative_path: ur5_robot_w_tool/ur5_robot_w_tool.urdf.xacro
+  SRDF:
+    relative_path: config/ur5.srdf
+  CONFIG:
+    author_name: 18gr660
+    author_email: 18gr660@student.aau.dk
+    generated_timestamp: 1524481758
