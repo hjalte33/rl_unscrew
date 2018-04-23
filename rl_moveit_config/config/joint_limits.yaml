@@ -2,7 +2,7 @@
 # Specific joint properties can be changed with the keys [max_position, min_position, max_velocity, max_acceleration]
 # Joint limits can be turned off with [has_velocity_limits, has_acceleration_limits]
 joint_limits:
-  ForceTorqueWithMount-ScrewDriverBitStar:
+  ForceTorqueWithMount_ScrewDriverBitStar:
     has_velocity_limits: true
     max_velocity: 1000
     has_acceleration_limits: false
@@ -37,7 +37,7 @@ joint_limits:
     max_velocity: 3.2
     has_acceleration_limits: false
     max_acceleration: 0
-  wrist_3_link-ForceTorqueWithMount:
+  wrist_3_link_ForceTorqueWithMount:
     has_velocity_limits: true
     max_velocity: 6.5
     has_acceleration_limits: false

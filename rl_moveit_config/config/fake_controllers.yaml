@@ -9,5 +9,5 @@ controller_list:
       - wrist_3_joint
   - name: fake_tool_controller
     joints:
-      - wrist_3_link-ForceTorqueWithMount
-      - ForceTorqueWithMount-ScrewDriverBitStar
+      - wrist_3_link_ForceTorqueWithMount
+      - ForceTorqueWithMount_ScrewDriverBitStar
