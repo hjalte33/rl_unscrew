@@ -5,7 +5,7 @@
         xyz="0 0 0"
         rpy="0 0 0" />
       <mass
-        value="0" />
+        value="0.8" />
       <inertia
         ixx="0"
         ixy="0"
