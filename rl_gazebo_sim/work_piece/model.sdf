@@ -21,7 +21,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>package://rl_gazebo_sim/meshes/M3.STL</uri>
+            <uri>model://rl_gazebo_sim/meshes/M3.STL</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -32,9 +32,9 @@
         <max_contacts>10</max_contacts>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
-          <mesh>
-            <uri>package://rl_gazebo_sim/meshes/M3.STL</uri>
-          </mesh>
+          <box>
+            <size>0.020 0.035 0.020</size>
+          </box>
         </geometry>
       </collision>
     </link>
@@ -58,7 +58,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>package://rl_gazebo_sim/meshes/ScrewBlock.STL</uri>
+            <uri>model://rl_gazebo_sim/meshes/ScrewBlock.STL</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -69,9 +69,10 @@
         <max_contacts>10</max_contacts>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
-          <mesh>
-            <uri>package://rl_gazebo_sim/meshes/ScrewBlock.STL</uri>
-          </mesh>
+          <cylinder>
+            <radius>0.003</radius>
+            <length>0.012</length>
+          </cylinder>
         </geometry>
       </collision>
     </link>
@@ -93,22 +94,10 @@
         <dynamics>
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
-          <damping>0</damping>
-          <friction>0</friction>
+          <damping>10</damping>
+          <friction>1</friction>
         </dynamics>
       </axis>
-      <physics>
-        <ode>
-          <limit>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </limit>
-          <suspension>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </suspension>
-        </ode>
-      </physics>
     </joint>
     <static>0</static>
     
