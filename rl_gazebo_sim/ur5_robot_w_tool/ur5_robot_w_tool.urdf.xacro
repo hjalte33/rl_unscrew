@@ -12,10 +12,10 @@
   <xacro:include filename="$(find rl_gazebo_sim)/screw_tool/screw_tool.urdf.xacro" />
 
 
-  <!-- arm -->
+  <!-- create the arm -->
   <xacro:ur5_robot prefix="" joint_limited="false"/>
 
-  <!-- tool -->
+  <!-- create the tool -->
   <xacro:my_tool parrent_link="wrist_3_link" origin_xyz="0 0.0823 0" origin_rpy="${pi} ${pi/4} 0"/>
 
 
