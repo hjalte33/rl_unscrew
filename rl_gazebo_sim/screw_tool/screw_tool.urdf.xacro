@@ -6,7 +6,7 @@
     <xacro:include filename="$(find rl_gazebo_sim)/urdf/ForceTorqueWithMount.urdf"/>
 
     <!-- add the ft-senser -->
-    <joint name="${parrent_link}-ForceTorqueWithMount" type="revolute">
+    <joint name="${parrent_link}_ForceTorqueWithMount" type="revolute">
       <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
       <parent link="${parrent_link}"/>
       <child link="ForceTorqueWithMount"/>
@@ -15,7 +15,7 @@
     </joint>
 
     <!-- Activate the feedback -->
-    <gazebo reference="${parrent_link}-ForceTorqueWithMount">
+    <gazebo reference="${parrent_link}_ForceTorqueWithMount">
       <provideFeedback>true</provideFeedback>
     </gazebo>
     <!-- FT sensor plugin-->    
@@ -24,7 +24,7 @@
         <updateRate>100.0</updateRate>
         <topicName>FTsensor_topic</topicName>
         <gaussianNoise>0.0</gaussianNoise>
-        <jointName>${parrent_link}-ForceTorqueWithMount</jointName>
+        <jointName>${parrent_link}_ForceTorqueWithMount</jointName>
       </plugin>    
     </gazebo>
 
@@ -33,7 +33,7 @@
     <xacro:include filename="$(find rl_gazebo_sim)/urdf/DrillAndMountAssembly.urdf"/> 
 
     <!-- Add the drill to the chain -->
-    <joint name="ForceTorqueWithMount-DrillAndMountAssembly" type="fixed">
+    <joint name="ForceTorqueWithMount_DrillAndMountAssembly" type="fixed">
       <origin xyz="0 -0.06342 0" rpy="0.0 ${pi/4} 0.0"/>
       <parent link="ForceTorqueWithMount"/>
       <child link="DrillAndMountAssembly"/>
@@ -46,12 +46,12 @@
     <xacro:include filename="$(find rl_gazebo_sim)/urdf/ScrewDriverBitStar.urdf"/>
 
     <!-- add the screw bit to the screw machine-->
-    <joint name="ForceTorqueWithMount-ScrewDriverBitStar" type="revolute">
+    <joint name="ForceTorqueWithMount_ScrewDriverBitStar" type="revolute">
       <origin xyz="0 -0.22042 0" rpy="0 0 0" /> <!--sunken 5mm in to the bit holder -->
       <parent link="ForceTorqueWithMount"/>
       <child link="ScrewDriverBitStar"/>
       <axis xyz="0 1 0"/>
-      <limit velocity="1000" effort="1" lower="-1e+16" upper="1e+16"/>     
+      <limit velocity="1000" effort="1" lower="-100000000" upper="100000000"/>     
       </joint>
 
   </xacro:macro>
