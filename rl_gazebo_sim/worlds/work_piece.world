@@ -1,0 +1,19 @@
+  <sdf version="1.4">
+    <world name="work_piece_world">
+      
+        <include>
+            <uri>model://rl_gazebo_sim/work_piece</uri> <!--This only works because i exported the gazebo path in the package.xml file-->
+            <name>work_piece</name>
+            <pose>0 0 0 0 0 0</pose>
+        </include>
+
+        <include>
+            <uri>model://sun</uri>
+        </include>
+
+        <include>
+            <uri>model://ground_plane</uri>
+        </include>
+
+    </world>
+  </sdf>

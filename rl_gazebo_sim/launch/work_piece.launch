@@ -1,19 +1,11 @@
-<?xml version="1.0"?>
 <launch>
-  <arg name="paused" default="false"/>
-  <arg name="gui" default="true"/>
-  
-  <!-- startup simulated world -->
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" default="worlds/empty.world"/>
-    <arg name="paused" value="$(arg paused)"/>
-    <arg name="gui" value="$(arg gui)"/>
+    <arg name="world_name" value="$(find rl_gazebo_sim)/worlds/work_piece.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
+    <arg name="paused" value="true"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="recording" value="false"/>
+    <arg name="debug" value="false"/>
   </include>
-
-  <!-- send work_piece urdf to param server -->
-  <param name="work_piece_description" command="$(find xacro)/xacro --inorder '$(find rl_gazebo_sim)/work_piece/work_piece.urdf.xacro'" />
-
-  <!-- push robot_description to factory and spawn robot in gazebo -->
-  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param work_piece_description -model robot -z 0" respawn="false" output="screen" />
-
- </launch>
+</launch>
