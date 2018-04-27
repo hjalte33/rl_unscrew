@@ -20,9 +20,13 @@ group = moveit_commander.MoveGroupCommander("arm") #should be tool
 display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path', moveit_msgs.msg.DisplayTrajectory)
 #Here we are creating a Pose object, which is the type of message that we will send as a goal. Then, we just give values to the variables that will define the goal Pose
 pose_target = geometry_msgs.msg.Pose()
+pose_target.orientation.x = 0.0
+pose_target.orientation.y = 0.7071068
+pose_target.orientation.z = 0.0
+pose_target.orientation.w = 0.7071068
 pose_target.position.x = 0.5
 pose_target.position.y = 0
-pose_target.position.z = 0.01
+pose_target.position.z = 0.05
 group.set_pose_target(pose_target)
 #Finally, we are telling the "manipulator" group we created previously, to calculate the plan.
 plan1 = group.plan()

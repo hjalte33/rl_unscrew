@@ -3,6 +3,7 @@ controller_list:
   - name: arm_controller
     action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
+    #joints: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint, ForceTorqueWithMount_ScrewDriverBitStar]
     joints:
       - shoulder_pan_joint
       - shoulder_lift_joint
@@ -10,9 +11,14 @@ controller_list:
       - wrist_1_joint
       - wrist_2_joint
       - wrist_3_joint
-  - name: hand_controller
-    action_ns: follow_joint_trajectory
-    type: FollowJointTrajectory
-    joints:
+      #- wrist_3_link_ForceTorqueWithMount
       - ForceTorqueWithMount_ScrewDriverBitStar
+      #- ScrewDriverBitStar_ee_tip
+  
+      # - name: hand_controller
+  #  action_ns: follow_joint_trajectory
+  #  type: FollowJointTrajectory
+  #  joints:
+  #    - ForceTorqueWithMount_ScrewDriverBitStar
+  #     - ScrewDriverBitStar_ee_tip
 

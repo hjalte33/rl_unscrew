@@ -32,19 +32,20 @@ wpose.position.z = waypoints[0].position.z
 waypoints.append(copy.deepcopy(wpose))
 
 # second move down
-wpose.position.z -= 0.10
-waypoints.append(copy.deepcopy(wpose))
+#pose.position.z -= 0.10
+#waypoints.append(copy.deepcopy(wpose))
 
 # third move to the side
-wpose.position.y += 0.05
-waypoints.append(copy.deepcopy(wpose))
-group.set_pose_target(pose_target)
+#wpose.position.y += 0.05
+#waypoints.append(copy.deepcopy(wpose))
+group.set_pose_target(wpose)
 #Finally, we are telling the "manipulator" group we created previously, to calculate the plan.
 (plan3, fraction) = group.compute_cartesian_path(
                              waypoints,   # waypoints to follow
                              0.01,        # eef_step
                              0.0)         # jump_threshold
 
+group.go(wait=True)
 print "============ Waiting while RVIZ displays plan3..."
 rospy.sleep(5)
 #By executing this line of code, you will be telling your robot to execute the last trajectory that has been set for the Planning Group

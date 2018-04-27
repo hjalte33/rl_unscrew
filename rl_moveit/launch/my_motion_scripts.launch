@@ -1,6 +1,6 @@
 <launch>
-<node pkg="rl_moveit" type="planning_linear_script.py" name="move_group_python_interface_tutorial" output="screen"> 
-
+<!--<node pkg="rl_moveit" type="planning_linear_script.py" name="move_group_python_interface_tutorial" output="screen"> -->
+<node pkg="rl_moveit" type="planning_script.py" name="move_group_python_interface_tutorial" output="screen"> 
 
 </node>
 </launch>

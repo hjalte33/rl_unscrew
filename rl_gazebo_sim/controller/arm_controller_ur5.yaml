@@ -7,6 +7,7 @@ arm_controller:
      - wrist_1_joint
      - wrist_2_joint
      - wrist_3_joint
+     #- ForceTorqueWithMount_ScrewDriverBitStar
   constraints:
       goal_time: 0.6
       stopped_velocity_tolerance: 0.05
