@@ -1,0 +1,106 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name="tables">
+    <pose frame="world">0 0 0 0 0 0</pose>
+    <link name="rob_table">
+      <pose>0 0 0.5 0 0 0</pose>
+      <inertial>
+        <mass>50</mass>
+        <inertia> 
+          <ixx>0.0</ixx> 
+          <ixy>0.0</ixy> 
+          <ixz>0.0</ixz> 
+          <iyy>0.0</iyy>
+          <iyz>0.0</iyz>
+          <izz>0.0</izz>
+        </inertia>
+      </inertial>
+      <visual name="rob_table">
+        <pose> 0.0 0.0 0.0 0.0 0.0 0.0</pose>
+        <geometry>
+          <cylinder> 
+            <radius>0.1</radius> 
+            <length>1</length>
+          </cylinder>
+        </geometry>
+      </visual>
+      <collision name="rob_table">
+        <pose> 0.0 0.0 0.0 0.0 0.0 0.0</pose>
+        <geometry>
+          <cylinder> 
+            <radius>0.1</radius> 
+            <length>1</length>
+          </cylinder>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient> 0 </restitution_coefficient>
+            <threshold> 10 </threshold>
+          </bounce>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+
+    <link name="work_table">
+      <pose>0.7 0 0.375 0 0 0</pose>
+      <inertial>
+        <mass>500</mass>
+        <inertia> 
+          <ixx>0.0</ixx> 
+          <ixy>0.0</ixy> 
+          <ixz>0.0</ixz> 
+          <iyy>0.0</iyy>
+          <iyz>0.0</iyz>
+          <izz>0.0</izz>
+        </inertia>
+      </inertial>
+      <visual name="work_table">
+        <pose> 0.0 0.0 0.0 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.75 0.75 0.75</size>
+          </box>
+        </geometry>
+      </visual>
+      <collision name="work_table">
+        <pose> 0.0 0.0 0.0 0.0 0.0 0.0</pose>
+        <geometry>
+          <box>
+            <size>0.75 0.75 0.75</size>
+          </box>
+        </geometry>
+        <surface>
+          <bounce>
+            <restitution_coefficient> 0 </restitution_coefficient>
+            <threshold> 10 </threshold>
+          </bounce>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
+
+    <link name="world"/>
+
+    <joint name="rob_table_world" type="fixed">
+      <pose> 0.0 0.0 0.0 0.0 0.0 0.0</pose>
+      <parent>world</parent>
+      <child>ros_table"</child>
+    </joint>
+    <joint name="work_table_world" type="fixed">
+      <pose> 0.0 0.0 0.0 0.0 0.0 0.0</pose>
+      <parent>world</parent>
+      <child>work_table</child>
+    </joint>
+    <static>true</static>
+    <allow_auto_disable>true</allow_auto_disable>
+  </model>
+</sdf>

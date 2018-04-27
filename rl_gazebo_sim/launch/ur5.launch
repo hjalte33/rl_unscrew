@@ -32,7 +32,7 @@
   <rosparam file="$(find rl_gazebo_sim)/controller/joint_state_controller.yaml" command="load"/>
   <node name="joint_state_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn joint_state_controller" respawn="false" output="screen"/>
 
-  <!-- no idea why we need both joint state controller and this one ? -->
+  <!-- no idea why we need both joint state controller and this one ?-->
   <rosparam file="$(find rl_gazebo_sim)/controller/arm_controller_ur5.yaml" command="load"/>
   <node name="arm_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller" respawn="false" output="screen"/>
 

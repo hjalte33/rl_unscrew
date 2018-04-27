@@ -8,10 +8,10 @@
         <mass>0.002</mass>
         <inertia>
           <ixx>0.166667</ixx>
-          <ixy>0</ixy>
-          <ixz>0</ixz>
+          <ixy>0.1</ixy>
+          <ixz>0.1</ixz>
           <iyy>0.166667</iyy>
-          <iyz>0</iyz>
+          <iyz>0.1</iyz>
           <izz>0.166667</izz>
         </inertia>
       </inertial>
@@ -28,13 +28,11 @@
         <transparency>0</transparency>
       </visual>
       <collision name='collision'>
-        <laser_retro>0</laser_retro>
-        <max_contacts>10</max_contacts>
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
-          <box>
-            <size>0.020 0.035 0.020</size>
-          </box>
+          <mesh>
+            <uri>model://rl_gazebo_sim/meshes/M3.STL</uri>
+          </mesh>
         </geometry>
       </collision>
     </link>
@@ -45,34 +43,35 @@
         <mass>10</mass>
         <inertia>
           <ixx>0.166667</ixx>
-          <ixy>0</ixy>
-          <ixz>0</ixz>
+          <ixy>0.1</ixy>
+          <ixz>0.1</ixz>
           <iyy>0.166667</iyy>
-          <iyz>0</iyz>
+          <iyz>0.1</iyz>
           <izz>0.166667</izz>
         </inertia>
       </inertial>
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
       <visual name='visual'>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose frame=''>0 0 0.010 0 -0 0</pose>
         <geometry>
-          <mesh>
+          <box>
+            <size>0.020 0.035 0.020</size>
+          </box>
+
+          <!--mesh>
             <uri>model://rl_gazebo_sim/meshes/ScrewBlock.STL</uri>
             <scale>1 1 1</scale>
-          </mesh>
+          </mesh-->
         </geometry>
         <transparency>0</transparency>
       </visual>
       <collision name='collision'>
-        <laser_retro>0</laser_retro>
-        <max_contacts>10</max_contacts>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose frame=''>0 0 0.010 0 -0 0</pose>
         <geometry>
-          <cylinder>
-            <radius>0.003</radius>
-            <length>0.012</length>
-          </cylinder>
+          <box>
+            <size>0.020 0.035 0.020</size>
+          </box>
         </geometry>
       </collision>
     </link>
@@ -87,20 +86,18 @@
         <use_parent_model_frame>0</use_parent_model_frame>
         <limit>
           <lower>0</lower>
-          <upper>100</upper>
-          <effort>100</effort>
+          <upper>50</upper>
+          <effort>1000</effort>
           <velocity>1</velocity>
         </limit>
         <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-          <damping>10</damping>
-          <friction>1</friction>
+          <damping>0.0</damping>
+          <friction>0.0</friction>
         </dynamics>
       </axis>
     </joint>
+
     <static>0</static>
-    
     <allow_auto_disable>0</allow_auto_disable>
   </model>
 
