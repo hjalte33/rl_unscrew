@@ -1,66 +1,61 @@
 <?xml version="2.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="my_tool" params="parrent_link origin_xyz origin_rpy">
-    <!-- ft-sensor -->
-    <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/urdf/ForceTorqueWithMount.urdf"/>
+  <xacro:macro name="my_tool" params="prefix">
+    <!-- include the ft-sensor -->
+    <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/urdf/ft_sensor.urdf"/>
 
-    <!-- add the ft-senser -->
-    <joint name="${parrent_link}_ForceTorqueWithMount" type="revolute">
-      <origin xyz="${origin_xyz}" rpy="${origin_rpy}" />
-      <parent link="${parrent_link}"/>
-      <child link="ForceTorqueWithMount"/>
-      <axis xyz="0.0 0.0 1.0"/>
-      <limit velocity="6.5" effort="1000" lower="0" upper="0" />  <!--This is a bugfix. Using fixed type joint causes problems with FT-sensor.-->
+    <!-- Include the drill and mount -->
+    <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/urdf/drill.urdf"/> 
+
+    <!-- Add the drill to the ft_sensor -->
+    <joint name="ft_sensor_drill_joint" type="fixed">
+      <origin xyz="0 0 0.06342" rpy="0.0 0.0 ${pi/4}"/>
+      <parent link="ft_sensor"/>
+      <child link="drill"/>
     </joint>
 
-    <!-- Activate the feedback -->
-    <gazebo reference="${parrent_link}_ForceTorqueWithMount">
+    <!-- Activate the feedback and make sure the joint dont get reduced because it's fixed.-->
+    <gazebo reference="ft_sensor_drill_joint">
+      <disableFixedJointLumping>true</disableFixedJointLumping>
       <provideFeedback>true</provideFeedback>
     </gazebo>
+
     <!-- FT sensor plugin-->    
     <gazebo>    
       <plugin name="FTsensor_controller"    filename="libgazebo_ros_ft_sensor.so">
         <updateRate>100.0</updateRate>
         <topicName>FTsensor_topic</topicName>
         <gaussianNoise>0.0</gaussianNoise>
-        <jointName>${parrent_link}_ForceTorqueWithMount</jointName>
+        <jointName>ft_sensor_drill_joint</jointName>
       </plugin>    
     </gazebo>
-
-  
-    <!-- Drill and mount -->
-    <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/urdf/DrillAndMountAssembly.urdf"/> 
-
-    <!-- Add the drill to the chain -->
-    <joint name="ForceTorqueWithMount_DrillAndMountAssembly" type="fixed">
-      <origin xyz="0 -0.06342 0" rpy="0.0 ${pi/4} 0.0"/>
-      <parent link="ForceTorqueWithMount"/>
-      <child link="DrillAndMountAssembly"/>
-      <axis xyz="0.0 0.0 0.0"/>
-      <limit lower="0.0" upper="0.0" effort="0.0" velocity="0.0"/>
-    </joint>
 
 
     <!-- include the screw bit-->
     <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/urdf/ScrewDriverBitStar.urdf"/>
 
     <!-- add the screw bit to the screw machine-->
-    <joint name="ForceTorqueWithMount_ScrewDriverBitStar" type="revolute">
-      <origin xyz="0 -0.22042 0" rpy="0 0 0" /> <!--sunken 5mm in to the bit holder -->
-      <parent link="ForceTorqueWithMount"/>
+    <joint name="drill_ScrewDriverBitStar_joint" type="revolute">
+      <origin xyz="0  0 0.147" rpy="0 0 0" /> <!--162mm but sunken 15mm in to the bit holder -->
+      <parent link="drill"/>
       <child link="ScrewDriverBitStar"/>
-      <axis xyz="0 1 0"/>
-      <limit velocity="1000" effort="1" lower="-100000000" upper="100000000"/>     
+      <axis xyz="0 0 1"/>
+      <limit velocity="1000" effort="1" lower="-100" upper="100"/>     
       </joint>
 
-    <!-- Frame coincident with all-zeros TCP on UR controller -->
+    <!-- Frame coincident with the tip of the screw driver bit -->
     <link name="ee_tip"/>
     <joint name="ScrewDriverBitStar_ee_tip" type="fixed">
-      <origin xyz="0 -0.025 0" rpy="${pi/-2.0} 0 0"/>
+      <origin xyz="0 0.025 0" rpy="0 0 0"/>
       <parent link="ScrewDriverBitStar"/>
-      <child link="ee_tip"/>
-    </joint>
+      <child link="ee_tip"/> 
+      </joint>
+
+    <!--dont reduce the fixed joint -->
+    <gazebo reference="ee_tip">
+      <disableFixedJointLumping>true</disableFixedJointLumping>
+    </gazebo>
 
   </xacro:macro>
 </robot>

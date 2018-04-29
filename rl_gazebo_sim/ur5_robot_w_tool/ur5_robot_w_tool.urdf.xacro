@@ -5,19 +5,31 @@
   <!-- common stuff -->
   <xacro:include filename="$(find ur_description)/urdf/common.gazebo.xacro" />
 
-  <!-- ur5 -->
+  <!-- include the ur5 -->
   <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
   
-  <!-- tool -->
-  <xacro:include filename="$(find rl_gazebo_sim)/screw_tool/screw_tool.urdf.xacro" />
+  <!-- include tool -->
+  <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/screw_tool/screw_tool.urdf.xacro" />
 
-  <!-- create the arm -->
+  <!-- create the arm macro-->
   <xacro:ur5_robot prefix="" joint_limited="true"/>
 
-  <!-- create the tool -->
-  <xacro:my_tool parrent_link="wrist_3_link" origin_xyz="0 0.0823 0" origin_rpy="${pi} ${pi/4} 0"/>
+  <!-- create the tool macro-->
+  <xacro:my_tool prefix=""/>
 
+  <!--dont reduce the fixed joint -->
+    <gazebo reference="ee_fixed_joint">
+      <disableFixedJointLumping>true</disableFixedJointLumping>
+    </gazebo>
 
+  <!-- add screw_tool to the robot -->
+    <joint name="ur_screw_tool_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+      <parent link="ee_link"/>
+      <child link="ft_sensor"/>
+    </joint>
+
+  <!-- Create a world link and fix it all to that -->
   <link name="world" />
 
   <!-- fix the arm in the world -->
@@ -29,3 +41,4 @@
 
 </robot>  
 
+    
