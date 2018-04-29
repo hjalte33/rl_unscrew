@@ -18,5 +18,11 @@
   <!-- push robot_description to factory and spawn robot in gazebo -->
   <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 1.005" respawn="false" output="screen" />
 
+  <!-- load the joint_state_controller to the parameter server-->
+  <rosparam file="$(find rl_gazebo_sim)/controller/ur5_controller.yaml" command="load"/>
+  <!-- start_controllers -->
+  <node name="joint_state_controller_spawner" pkg="controller_manager" type="spawner" 
+        args="joint_state_controller arm_controller screw_controller" respawn="false" />
+
 </launch>
 
