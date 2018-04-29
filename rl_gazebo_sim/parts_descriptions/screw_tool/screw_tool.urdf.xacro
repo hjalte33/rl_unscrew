@@ -57,6 +57,21 @@
       <disableFixedJointLumping>true</disableFixedJointLumping>
     </gazebo>
 
+    <!-- 
+      add transmision to the screw_tool so it can be controlled by ros
+      it is added to the same hardware_interface as the ur robot so it
+      is the same namespace 
+    -->
+    <transmission name="screw_tool_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="drill_ScrewDriverBitStar_joint">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="screw_motor">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
   </xacro:macro>
 </robot>
 

@@ -2,8 +2,13 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro"
        name="ur5" >
 
-  <!-- common stuff -->
-  <xacro:include filename="$(find ur_description)/urdf/common.gazebo.xacro" />
+  <!-- launch the ros_controller for gazebo that publishes the hardware interfaces -->
+  <gazebo>
+    <plugin name="ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/ur5</robotNamespace>
+      <!--robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType-->
+    </plugin>
+  </gazebo>
 
   <!-- include the ur5 -->
   <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
@@ -38,6 +43,8 @@
     <child link = "base_link" />
     <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
   </joint>
+
+  
 
 </robot>  
 
