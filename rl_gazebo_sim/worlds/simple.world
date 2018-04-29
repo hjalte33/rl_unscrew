@@ -2,13 +2,13 @@
   <world name='default'>
 
     <include>
-      <uri>model://rl_gazebo_sim/tables</uri>
+      <uri>model://rl_gazebo_sim/parts_descriptions/tables</uri>
       <name>tables</name>
       <pose>0 0 0 0 0 0</pose>
     </include>
 
     <include>
-        <uri>model://rl_gazebo_sim/work_piece</uri> <!--This only works because i exported the gazebo path in the package.xml file-->
+        <uri>model://rl_gazebo_sim/parts_descriptions/work_piece</uri> <!--This only works because i exported the gazebo path in the package.xml file-->
         <name>work_piece</name>
         <pose>0.5 0 1 0 0 0</pose>
     </include>
