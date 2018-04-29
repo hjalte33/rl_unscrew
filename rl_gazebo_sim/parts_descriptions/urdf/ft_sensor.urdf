@@ -1,13 +1,13 @@
 <robot
-  name="ForceTorqueWithMount">
+  name="ft_sensor">
   <link
-    name="ForceTorqueWithMount">
+    name="ft_sensor">
     <inertial>
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
       <mass
-        value="1.2" />
+        value="1" />
       <inertia
         ixx="0"
         ixy="0"
@@ -19,10 +19,10 @@
     <visual>
       <origin
         xyz="0 0 0"
-        rpy="1.5707963267949 0 0" />
+        rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rl_gazebo_sim/meshes/ForceTorqueWithMount.STL" />
+          filename="package://rl_gazebo_sim/parts_descriptions/meshes/ft_sensor.STL" />
       </geometry>
       <material
         name="">
@@ -33,10 +33,10 @@
     <collision>
       <origin
         xyz="0 0 0"
-        rpy="1.5707963267949 0 0" />
+        rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://rl_gazebo_sim/meshes/ForceTorqueWithMount.STL" />
+          filename="package://rl_gazebo_sim/parts_descriptions/meshes/ft_sensor.STL" />
       </geometry>
     </collision>
   </link>
