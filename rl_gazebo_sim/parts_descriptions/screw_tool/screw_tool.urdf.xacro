@@ -3,7 +3,7 @@
 
   <xacro:macro name="my_tool" params="parrent_link origin_xyz origin_rpy">
     <!-- ft-sensor -->
-    <xacro:include filename="$(find rl_gazebo_sim)/urdf/ForceTorqueWithMount.urdf"/>
+    <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/urdf/ForceTorqueWithMount.urdf"/>
 
     <!-- add the ft-senser -->
     <joint name="${parrent_link}_ForceTorqueWithMount" type="revolute">
@@ -30,7 +30,7 @@
 
   
     <!-- Drill and mount -->
-    <xacro:include filename="$(find rl_gazebo_sim)/urdf/DrillAndMountAssembly.urdf"/> 
+    <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/urdf/DrillAndMountAssembly.urdf"/> 
 
     <!-- Add the drill to the chain -->
     <joint name="ForceTorqueWithMount_DrillAndMountAssembly" type="fixed">
@@ -43,7 +43,7 @@
 
 
     <!-- include the screw bit-->
-    <xacro:include filename="$(find rl_gazebo_sim)/urdf/ScrewDriverBitStar.urdf"/>
+    <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/urdf/ScrewDriverBitStar.urdf"/>
 
     <!-- add the screw bit to the screw machine-->
     <joint name="ForceTorqueWithMount_ScrewDriverBitStar" type="revolute">
