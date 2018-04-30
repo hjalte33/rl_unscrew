@@ -25,7 +25,7 @@ waypoints.append(group.get_current_pose().pose)
 
 # first orient gripper and move forward (+x)
 wpose = geometry_msgs.msg.Pose()
-wpose.orientation.w = 1.0
+#wpose.orientation.w = 1.0
 wpose.position.x = waypoints[0].position.x + 0.1
 wpose.position.y = waypoints[0].position.y
 wpose.position.z = waypoints[0].position.z
