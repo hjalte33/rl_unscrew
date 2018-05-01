@@ -133,6 +133,8 @@ group = moveit_commander.MoveGroupCommander("arm")
 # Tool group not yet used.
 toolgroup = moveit_commander.MoveGroupCommander("tool")
 
+print group.get_end_effector_link()
+
 
 while not rospy.is_shutdown():
     # #*************** Uncomment this block if the node should send random points to the action function
