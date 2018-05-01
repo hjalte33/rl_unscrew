@@ -130,9 +130,7 @@ scene = moveit_commander.PlanningSceneInterface()
 #Creating a MoveGroupCommander object, which is an interface to the manipulator group of joints 
 group = moveit_commander.MoveGroupCommander("arm")
 
-# Tool group not yet used.
-toolgroup = moveit_commander.MoveGroupCommander("tool")
-
+# print the end effector link so we know what frame is used (should be ee_tip)
 print group.get_end_effector_link()
 
 

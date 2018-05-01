@@ -3,9 +3,9 @@
 
   <model name='work_piece'>
     <link name='screw'>
-      <pose frame=''>0 0 0.023 0 0 0</pose>
+      <pose frame=''>0 0 0.007 0 0 0</pose>
       <inertial>
-        <mass>0.002</mass>
+        <mass>0.010</mass>
         <inertia>
           <ixx>0.166667</ixx>
           <ixy>0.1</ixy>
@@ -32,6 +32,7 @@
         <geometry>
           <mesh>
             <uri>model://rl_gazebo_sim/parts_descriptions/meshes/screw.STL</uri>
+            <scale>1.08 1.08 1</scale> <!-- scaled so the screw bit can actually enter the screw -->
           </mesh>
         </geometry>
         <surface>
@@ -60,25 +61,28 @@
       <self_collide>0</self_collide>
       <kinematic>0</kinematic>
       <visual name='visual'>
-        <pose frame=''>0 0 0.010 0 -0 0</pose>
+        <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
-          <box>
-            <size>0.020 0.035 0.020</size>
-          </box>
-
-          <!--mesh>
-            <uri>model://rl_gazebo_sim/parts_descriptions/meshes/ScrewBlock.STL</uri>
-            <scale>1 1 1</scale>
-          </mesh-->
+          <!--box>
+            <size>0.030 0.030 0.030</size>
+          </box-->
+          <mesh>
+            <uri>model://rl_gazebo_sim/parts_descriptions/meshes/block.STL</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
         </geometry>
         <transparency>0</transparency>
       </visual>
       <collision name='collision'>
-        <pose frame=''>0 0 0.010 0 -0 0</pose>
+        <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
-          <box>
-            <size>0.020 0.035 0.020</size>
-          </box>
+          <!--box>
+            <size>0.030 0.030 0.030</size>
+          </box-->
+          <mesh>
+            <uri>model://rl_gazebo_sim/parts_descriptions/meshes/block.STL</uri>
+            <scale>0.001 0.001 0.001</scale>
+          </mesh>
         </geometry>
       </collision>
     </link>
