@@ -11,6 +11,10 @@
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
     <group name="arm">
         <link name="ee_link" />
+        <link name="ee_tip" />
+        <link name="ft_sensor" />
+        <link name="drill" />
+        <link name="ScrewDriverBitStar" />
         <joint name="shoulder_pan_joint" />
         <joint name="shoulder_lift_joint" />
         <joint name="elbow_joint" />
