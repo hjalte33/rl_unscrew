@@ -130,17 +130,21 @@ scene = moveit_commander.PlanningSceneInterface()
 #Creating a MoveGroupCommander object, which is an interface to the manipulator group of joints 
 group = moveit_commander.MoveGroupCommander("arm")
 
+# Tool group not yet used.
+toolgroup = moveit_commander.MoveGroupCommander("tool")
+
+
 while not rospy.is_shutdown():
-    #*************** Uncomment this block if the node should send random points to the action function
-    #Gives a random number between 1 and 6, to move the robot randomly with the 6 actions.
-    action = random.randint(1,6)
+    # #*************** Uncomment this block if the node should send random points to the action function
+    # #Gives a random number between 1 and 6, to move the robot randomly with the 6 actions.
+    # action = random.randint(1,6)
     
-    #Calls move function, which sends the wanted movement to the robot
-    move(move_action(action))
+    # #Calls move function, which sends the wanted movement to the robot
+    # move(move_action(action))
     
 
 
 
-    # #**************** Uncomment this block if the node should subscribe to a topic for receiving points.
-    # rospy.Subscriber("pose", geometry_msgs.msg.Pose, callback)
-    # rospy.spin()
+    #**************** Uncomment this block if the node should subscribe to a topic for receiving points.
+    rospy.Subscriber("pose", geometry_msgs.msg.Pose, callback)
+    rospy.spin()
