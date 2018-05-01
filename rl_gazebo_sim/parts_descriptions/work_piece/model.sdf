@@ -3,7 +3,7 @@
 
   <model name='work_piece'>
     <link name='screw'>
-      <pose frame=''>0 0 0.008 0 0 0</pose>
+      <pose frame=''>0 0 0.023 0 0 0</pose>
       <inertial>
         <mass>0.002</mass>
         <inertia>
@@ -21,7 +21,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://rl_gazebo_sim/parts_descriptions/meshes/M3.STL</uri>
+            <uri>model://rl_gazebo_sim/parts_descriptions/meshes/screw.STL</uri>
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
@@ -31,7 +31,7 @@
         <pose frame=''>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <uri>model://rl_gazebo_sim/parts_descriptions/meshes/M3.STL</uri>
+            <uri>model://rl_gazebo_sim/parts_descriptions/meshes/screw.STL</uri>
           </mesh>
         </geometry>
         <surface>
