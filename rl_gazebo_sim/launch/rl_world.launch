@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="paused" default="false"/>
+  <arg name="paused" default="true"/>
   <arg name="gui" default="true"/>
 
   <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
@@ -16,7 +16,19 @@
   <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find rl_gazebo_sim)/ur5_robot_w_tool/ur5_robot_w_tool.urdf.xacro'" />
 
   <!-- push robot_description to factory and spawn robot in gazebo -->
-  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model robot -z 1.005" respawn="false" output="screen" />
+  <node name="spawn_gazebo_model" 
+        pkg="gazebo_ros" 
+        type="spawn_model" 
+        args="-urdf -param robot_description -model robot -z 1.005 
+              -J sholder_pan_joint 0
+              -J sholder_lift_joint -1.5707
+              -J elbow_joint 1.5707 
+              -J wrist_1_joint -1.5707
+              -J wrist_2_joint -1.5707
+              -J wrist_3_joint 0" 
+        respawn="false"
+        output="screen" 
+  />   <!-- respawn = false means dont respawn the spawner node again. -->   
 
   <!-- load the joint_state_controller to the parameter server-->
   <rosparam file="$(find rl_gazebo_sim)/controller/ur5_controller.yaml" command="load"/>
