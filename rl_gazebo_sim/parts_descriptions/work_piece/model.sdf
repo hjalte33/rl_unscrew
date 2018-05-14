@@ -8,7 +8,7 @@
         <mass>0.010</mass>
         <inertia>
           <ixx>0.166667</ixx>
-          <ixy>0.1</ixy>
+          <ixy>0.1</ixy>nch
           <ixz>0.1</ixz>
           <iyy>0.166667</iyy>
           <iyz>0.1</iyz>
@@ -22,7 +22,7 @@
         <geometry>
           <mesh>
             <uri>model://rl_gazebo_sim/parts_descriptions/meshes/screw.STL</uri>
-            <scale>1 1 1</scale>
+            <scale>1.08 1.08 1.08</scale>
           </mesh>
         </geometry>
         <transparency>0</transparency>
