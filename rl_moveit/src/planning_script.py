@@ -5,6 +5,7 @@ import rospy
 import moveit_commander #allow us to communicate with the MoveIt Rviz interface
 import moveit_msgs.msg
 import geometry_msgs.msg
+import std_msgs
 import random
 
 #####################################################
@@ -31,76 +32,87 @@ def callback(pose_target):
     rospy.sleep(5)
 
 def move_action(action):
-
+    
     #how much the robot should move for each step
     step_size = 0.0005
 
     #The search space needs to correspend to what's in the boundaries dict
-    boundaries = {'x_low': 0.496, 'x_high': 0.498, 'y_low': 0.003, 'y_high': 0.005, 'z_low': 0.0055, 'z_high': 0.0075}
-    
+    #boundaries = {'x_low': 0.496, 'x_high': 0.498, 'y_low': 0.003, 'y_high': 0.005, 'z_low': 0.0055, 'z_high': 0.0075}
+    boundaries = {'x_low': 0.300, 'x_high': 0.600, 'y_low': 0.003, 'y_high': 0.400, 'z_low': 0.005, 'z_high': 0.300}
+
     #Get the current posistion
     current_pose = group.get_current_pose()
 
     #6 different move actions. if statements to check which one is wanted.
-    #Action 1: move step_size in x direction
-    #Action 2: move step_size in -x direction
-    #Action 3: move step_size in y direction
-    #Action 4: move step_size in -y direction
-    #Action 5: move step_size in z direction
-    #Action 6: move step_size in -z direction
+    #Action 0: move step_size in x direction
+    #Action 1: move step_size in -x direction
+    #Action 2: move step_size in y direction
+    #Action 3: move step_size in -y direction
+    #Action 4: move step_size in z direction
+    #Action 5: move step_size in -z direction
 
-    if action == 1:
+    if action.data == 0:
         
         #makes sure that if executing this action, that the robot does not get out of the workspace. If so, return False.
         if (current_pose.pose.position.x > (boundaries['x_high'] - 0.0001)):
-            return False
+            print "Out of bounds"
+            #return False
         
         #If the robot is clear to go, the x position is increased by the step_size.
         else:
             current_pose.pose.position.x = current_pose.pose.position.x + step_size
+            move(current_pose)
 
-    elif action == 2:
+    elif action.data == 1:
         if (current_pose.pose.position.x < (boundaries['x_low'] + 0.0001)):
-            return False
+            print "Out of bounds"
+            #return False
         else: 
             current_pose.pose.position.x = current_pose.pose.position.x - step_size
+            move(current_pose)
 
-    elif action == 3:
+    elif action.data == 2:
         if (current_pose.pose.position.y > (boundaries['y_high'] - 0.0001)):
-            return False
+            print "Out of bounds"
+            #return False
         else: 
             current_pose.pose.position.y = current_pose.pose.position.y + step_size
+            move(current_pose)
 
-    elif action == 4:
+    elif action.data == 3:
         if (current_pose.pose.position.y < (boundaries['y_low'] + 0.0001)):
-            return False
+            print "Out of bounds"
+            #return False
         else: 
             current_pose.pose.position.y = current_pose.pose.position.y - step_size
+            move(current_pose)
 
-    elif action == 5:
+    elif action.data == 4:
         if (current_pose.pose.position.z > (boundaries['z_high'] - 0.0001)):
-            return False
+            print "Out of bounds"
+            #return False
         else: 
             current_pose.pose.position.z = current_pose.pose.position.z + step_size
+            move(current_pose)
 
-    elif action == 6:
+    elif action.data == 5:
         if (current_pose.pose.position.z < (boundaries['z_low'] + 0.0001)):
-            return False
+            print "Out of bounds"
+            #return False
         else: 
             current_pose.pose.position.z = current_pose.pose.position.z - step_size
-
-    #If garbage is send to the function return "Invalid aciton"
-    else: return "Invalid action"
+            move(current_pose)
 
     #Returns the pose after the action has been accounted for
-    return current_pose
+    #return current_pose
 
 def move(pose_target):
     #if move_action returned false, the robot should not move and this function then returns False
-    if pose_target == False:
-        print "out of boundary"
-        return False
+    #if pose_target == False:
+    #    print "out of boundary"
+    #    return False
 
+    
     #send the position to the group object
     group.set_pose_target(pose_target)
 
@@ -111,8 +123,10 @@ def move(pose_target):
     group.go(wait=True)
     
     #when playing around it is nice to print the current position
-    print group.get_current_pose()
-    rospy.sleep(0.1)
+    #print group.get_current_pose()
+    print "Pose target:"
+    print pose_target
+    #rospy.sleep(0.5)    
 
 
 #initializing the moveit_commander module.
@@ -133,18 +147,19 @@ group = moveit_commander.MoveGroupCommander("arm")
 # print the end effector link so we know what frame is used (should be ee_tip)
 print group.get_end_effector_link()
 
-
 while not rospy.is_shutdown():
     # #*************** Uncomment this block if the node should send random points to the action function
     # #Gives a random number between 1 and 6, to move the robot randomly with the 6 actions.
     # action = random.randint(1,6)
     
     # #Calls move function, which sends the wanted movement to the robot
-    # move(move_action(action))
+    rospy.Subscriber("action_move", std_msgs.msg.Int8, move_action)
+    rospy.spin()
     
 
 
 
     #**************** Uncomment this block if the node should subscribe to a topic for receiving points.
-    rospy.Subscriber("pose", geometry_msgs.msg.Pose, callback)
-    rospy.spin()
+    #rospy.Subscriber("pose", geometry_msgs.msg.Pose, callback)
+    #rospy.spin()
+
