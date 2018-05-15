@@ -8,7 +8,6 @@ import gym_gazebo
 import time
 import numpy
 import random
-import time
 import rospy
 import geometry_msgs
 
