@@ -1,19 +1,16 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 import sys
-#sys.path.insert(0, '/path/to/application/app/folder')
-sys.path.append('../')
+import numpy
+import rospy
+import std_msgs
+import time
+import geometry_msgs.msg
+import random
+from std_srvs.srv import Empty
 
 import gym
-import gym_gazebo
-import time
-import numpy
-import random
-import rospy
-import geometry_msgs
-
+import rl_gym
 import qlearn
-import liveplot
-
 
 def render():
     render_skip = 0 #Skip first X episodes.
@@ -27,12 +24,10 @@ def render():
 
 if __name__ == '__main__':
 
-    env = gym.make('UR5environment-v0')
-    #rospy.init_node('RL_node', anonymous=True)
+    env = gym.make('gym_unscrewing_env-v0')
 
-    outdir = '/tmp/gazebo_gym_experiments' #What is this?? Directory we need to input or??
+    outdir = '/tmp/gazebo_gym_experiments'
     env = gym.wrappers.Monitor(env, outdir, force=True)
-    plotter = liveplot.LivePlot(outdir)
 
     last_time_steps = numpy.ndarray(0)
 
@@ -44,13 +39,13 @@ if __name__ == '__main__':
     epsilon_discount = 0.9986
 
     start_time = time.time()
-    total_episodes = 10
+    total_episodes = 100
     highest_reward = 0
 
     for x in range(total_episodes):
         done = False
 
-        cumulated_reward = 0
+        cumulated_reward = 0 #Should going forward give more reward then L/R ?
 
         observation = env.reset()
 
@@ -58,41 +53,22 @@ if __name__ == '__main__':
             qlearn.epsilon *= epsilon_discount
 
         #render() #defined above, not env.render()
-        print "observation:"
-        print observation
 
-        #state = ''.join(map(str, observation))
-        state = observation
+        state = ''.join(map(str, observation))
 
-        for i in range(1500): #Number is actions per episode
-            #rospy.sleep(1)
-            #time.sleep(1)
+        for i in range(1500):
 
-            ''' CHANGE THIS TO DATA THINGY '''
-            current_pose = None
-            while current_pose == None:
-                try:
-                    current_pose = rospy.wait_for_message('/curr_pose', geometry_msgs.msg.PoseStamped, 1)
-                except:
-                    print "Couldn't read current position"
-
-            print "/n"
-            print "/n"
-            print current_pose
-            print "/n"
             # Pick an action based on the current state
             action = qlearn.chooseAction(state)
 
             # Execute the action and get feedback
             observation, reward, done, info = env.step(action)
-            #print env.step(action)
-            #print observation, reward, done, info
             cumulated_reward += reward
 
             if highest_reward < cumulated_reward:
                 highest_reward = cumulated_reward
 
-            nextState = observation
+            nextState = ''.join(map(str, observation))
 
             qlearn.learn(state, action, reward, nextState)
 
@@ -104,13 +80,9 @@ if __name__ == '__main__':
                 last_time_steps = numpy.append(last_time_steps, [int(i + 1)])
                 break
 
-        #if x%100==0:
-        #    plotter.plot(env)
-
         m, s = divmod(int(time.time() - start_time), 60)
         h, m = divmod(m, 60)
         print ("EP: "+str(x+1)+" - [alpha: "+str(round(qlearn.alpha,2))+" - gamma: "+str(round(qlearn.gamma,2))+" - epsilon: "+str(round(qlearn.epsilon,2))+"] - Reward: "+str(cumulated_reward)+"     Time: %d:%02d:%02d" % (h, m, s))
-    env.reset()
 
     #Github table content
     print ("\n|"+str(total_episodes)+"|"+str(qlearn.alpha)+"|"+str(qlearn.gamma)+"|"+str(initial_epsilon)+"*"+str(epsilon_discount)+"|"+str(highest_reward)+"| PICTURE |")
