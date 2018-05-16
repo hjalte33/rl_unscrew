@@ -130,5 +130,8 @@ class RobotReset ():
 
 
 if __name__ == "__main__":
+    print('Waiting for the controller to start')
+    rospy.wait_for_service('/move_group/get_loggers')
+    print ('The controller seems to be starded so I proceed to launch the reset service')
     resetter = RobotReset()
     rospy.spin()
