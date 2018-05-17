@@ -47,7 +47,7 @@
     </link>
 
     <link name="work_table">
-      <pose>0.7 0 0.375 0 0 0</pose>
+      <pose>0.5 0 0.5 0 0 0</pose>
       <inertial>
         <mass>500</mass>
         <inertia> 
@@ -63,7 +63,7 @@
         <pose> 0.0 0.0 0.0 0.0 0.0 0.0</pose>
         <geometry>
           <box>
-            <size>0.75 0.75 0.75</size>
+            <size>0.3 0.3 1.0</size>
           </box>
         </geometry>
       </visual>
@@ -71,7 +71,7 @@
         <pose> 0.0 0.0 0.0 0.0 0.0 0.0</pose>
         <geometry>
           <box>
-            <size>0.75 0.75 0.75</size>
+            <size>0.3 0.3 1.0</size>
           </box>
         </geometry>
         <surface>
@@ -88,6 +88,7 @@
       </collision>
     </link>
 
+    <!-- dummy link world so the parts can be fixed to it. -->
     <link name="world"/>
 
     <joint name="rob_table_world" type="fixed">
