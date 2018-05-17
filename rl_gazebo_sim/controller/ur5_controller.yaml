@@ -1,7 +1,9 @@
 joint_names: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint]
+
 joint_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 50
+
 arm_controller:
   type: position_controllers/JointTrajectoryController
   joints:
@@ -20,8 +22,14 @@ arm_controller:
     wrist_1_joint: {trajectory: 0.1, goal: 0.1}
     wrist_2_joint: {trajectory: 0.1, goal: 0.1}
     wrist_3_joint: {trajectory: 0.1, goal: 0.1}
+
 screw_controller:
-  type: position_controllers/JointTrajectoryController
+  type: velocity_controllers/JointTrajectoryController
   joints:
     - drill_ScrewDriverBitStar_joint
+  gains:
+    drill_ScrewDriverBitStar_joint:
+      p: 10.0
+      i: 0.0
+      d: 0.0
 
