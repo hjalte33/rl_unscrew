@@ -73,12 +73,12 @@ class RobotReset ():
         """
         
         # Dict describing the joint states for the robot in home position. 
-        joint_target = {'shoulder_pan_joint' : 0,
-                        'shoulder_lift_joint': -1.5707,
-                        'elbow_joint'       : 1.5707,
-                        'wrist_1_joint'     : -1.5707,
-                        'wrist_2_joint'     : -1.5707,
-                        'wrist_3_joint'     : 0 }
+        joint_target = {'shoulder_pan_joint' : -0.219421051071226,
+                        'shoulder_lift_joint': -1.4877301174597237,
+                        'elbow_joint'       : 1.9075886985532051,
+                        'wrist_1_joint'     : -1.9902674414916985,
+                        'wrist_2_joint'     : -1.5717293284405551,
+                        'wrist_3_joint'     : -0.10938365036715503 }
         
         print('The joint target is: %s' % joint_target)
         
