@@ -35,8 +35,8 @@ time.sleep(5)
 
 current_pose = group.get_current_pose()
 current_pose.pose.position.x = 0.5
-current_pose.pose.position.y = 0.2
-current_pose.pose.position.z = 0.25
+current_pose.pose.position.y = 0.0
+current_pose.pose.position.z = 0.035
 
 group.set_pose_target(current_pose)
 group.plan()
