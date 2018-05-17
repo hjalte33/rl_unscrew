@@ -23,6 +23,14 @@ class RobotReset ():
         # Creating a MoveGroupCommander object, which is an interface to the manipulator group of joints 
         self.group = moveit_commander.MoveGroupCommander("arm")
 
+        self.pauser_srv = rospy.ServiceProxy('/gazedo/pause_physics', Empty)
+
+        self.reset_world_srv = rospy.ServiceProxy('/gazebo/reset_world', Empty)
+        
+        self.reset_simulation_srv = rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
+        
+        self.unpauser_srv = rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+
         # Fetch the path to the robot urdf file
         ros_pack = rospkg.RosPack()
         robot_path = ros_pack.get_path('rl_gazebo_sim')
@@ -85,6 +93,9 @@ class RobotReset ():
         self.group.go(wait=True)
         rospy.sleep(0.1)
 
+        # Reset the screw and the world.
+        self.reset_world_srv.call()
+
     def reset_func_respawner(self, req):
         """Function respawns the robot upon reset call.
         This way of resetting the robot seems to break the controller.
@@ -95,7 +106,7 @@ class RobotReset ():
         """
 
         print('Pausing')
-        rospy.ServiceProxy('/gazedo/pause_physics', Empty)
+        self.pauser_srv.call()
         time.sleep(1)
 
         # print('Stopping controllers')
@@ -115,13 +126,13 @@ class RobotReset ():
         time.sleep(1)
 
         print('Reset world')
-        rospy.ServiceProxy('/gazebo/reset_world', Empty)
+        self.reset_world_srv.call()
         
         print('Reset simulaiton')
-        rospy.ServiceProxy('/gazebo/reset_simulation', Empty)
+        self.reset_simulation_srv.call()
         
         print('Unpause')
-        rospy.ServiceProxy('/gazebo/unpause_physics', Empty)
+        self.unpauser_srv.call()
         time.sleep(1)
 
         # print('Starting controllers again')
