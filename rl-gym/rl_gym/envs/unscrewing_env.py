@@ -20,9 +20,11 @@ class UnscrewingEnv(gym.Env):
         #Setup publisher to publish actions
         self.action_pub = rospy.Publisher('/action_move', std_msgs.msg.Int8, queue_size=1)
 
+        self.reset_robot = rospy.ServiceProxy('/reset_robot', Empty)
+
         #Robot initializing boundaries and step size
         self.step_size = 0.01
-        self.boundaries = {'x_low': 0.300, 'x_high': 0.600, 'y_low': 0.003, 'y_high': 0.400, 'z_low': 0.005, 'z_high': 0.300}
+        self.boundaries = {'x_low': 0.45, 'x_high': 0.55, 'y_low': -0.05, 'y_high': 0.05, 'z_low': 0.022, 'z_high': 0.04}
 
         #Define actions and reward range
         self.action_space = spaces.Discrete(6) #x+, x-, y+, y-, z+, z-, (add when unscrewing is an action too)
@@ -69,23 +71,22 @@ class UnscrewingEnv(gym.Env):
 
 
     def out_of_bounds(self, current_pose):
-        boundaries = {'x_low': 0.300, 'x_high': 0.600, 'y_low': 0.003, 'y_high': 0.400, 'z_low': 0.005, 'z_high': 0.300}
-        if (current_pose.pose.position.x > (boundaries['x_high'] - 0.0001)):
+        if (current_pose.pose.position.x > (self.boundaries['x_high'] - 0.0001)):
             return True
 
-        elif (current_pose.pose.position.x < (boundaries['x_low'] + 0.0001)):
+        elif (current_pose.pose.position.x < (self.boundaries['x_low'] + 0.0001)):
             return True
 
-        elif (current_pose.pose.position.y > (boundaries['y_high'] - 0.0001)):
+        elif (current_pose.pose.position.y > (self.boundaries['y_high'] - 0.0001)):
             return True
 
-        elif (current_pose.pose.position.y < (boundaries['y_low'] + 0.0001)):
+        elif (current_pose.pose.position.y < (self.boundaries['y_low'] + 0.0001)):
             return True
 
-        elif (current_pose.pose.position.z > (boundaries['z_high'] - 0.0001)):
+        elif (current_pose.pose.position.z > (self.boundaries['z_high'] - 0.0001)):
             return True
 
-        elif (current_pose.pose.position.z < (boundaries['z_low'] + 0.0001)):
+        elif (current_pose.pose.position.z < (self.boundaries['z_low'] + 0.0001)):
             return True
 
         else:
@@ -127,12 +128,13 @@ class UnscrewingEnv(gym.Env):
         state['x'] = x
         state['y'] = y
         state['z'] = z
-        state['force_z'] = force_z
+        state['force_z'] = force_z.wrench.force.z
         return state
 
 
     def is_done(self, data, current_pose):
         #print "im in get_state"
+        print data
         max_ft = -20
         done = False
         if (max_ft > data['force_z'] or self.out_of_bounds(current_pose) == True):
@@ -141,8 +143,7 @@ class UnscrewingEnv(gym.Env):
 
     def reset(self):
         print("Reset Simulation")
-        rospy.ServiceProxy('/reset_robot', Empty)
-
+        self.reset_robot.call()
         rospy.sleep(20)
 
         current_pose = None
