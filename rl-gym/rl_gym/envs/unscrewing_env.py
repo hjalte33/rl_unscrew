@@ -7,7 +7,7 @@ import numpy as np
 import rospy
 import std_msgs.msg
 import geometry_msgs.msg
-from std_srvs.srv import Empty
+from std_srvs.srv import Trigger
 
 class UnscrewingEnv(gym.Env):
 
@@ -20,7 +20,7 @@ class UnscrewingEnv(gym.Env):
         #Setup publisher to publish actions
         self.action_pub = rospy.Publisher('/action_move', std_msgs.msg.Int8, queue_size=1)
 
-        self.reset_robot = rospy.ServiceProxy('/reset_robot', Empty)
+        self.reset_robot = rospy.ServiceProxy('/reset_robot', Trigger)
 
         #Robot initializing boundaries and step size
         self.step_size = 0.01
@@ -134,7 +134,7 @@ class UnscrewingEnv(gym.Env):
 
     def is_done(self, data, current_pose):
         #print "im in get_state"
-        print data
+        #print data
         max_ft = -20
         done = False
         if (max_ft > data['force_z'] or self.out_of_bounds(current_pose) == True):
@@ -143,8 +143,9 @@ class UnscrewingEnv(gym.Env):
 
     def reset(self):
         print("Reset Simulation")
-        self.reset_robot.call()
-        rospy.sleep(20)
+        reset_succes = self.reset_robot.call()
+        rospy.sleep(1)
+        #print reset_succes, type(reset_succes)
 
         current_pose = None
         while current_pose == None:
