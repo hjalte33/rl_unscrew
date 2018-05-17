@@ -56,7 +56,7 @@ class RobotReset ():
         # self.spawner.call(self.robot_name, self.robot_urdf, "", self.robot_pose, "world")
 
         # Make this class a service with the self.reset_func as the call function. 
-        s = rospy.Service('reset_robot', Empty, self.reset_func_mover)
+        s = rospy.Service('reset_robot', Trigger, self.reset_func_mover)
         print "Ready to reset robot."
 
     # Callback function for the subscriber. This is used when using the node as
@@ -95,6 +95,9 @@ class RobotReset ():
 
         # Reset the screw and the world.
         self.reset_world_srv.call()
+
+        #return true to indicate success
+        return [True,'succeded resetting the robot.']
 
     def reset_func_respawner(self, req):
         """Function respawns the robot upon reset call.
