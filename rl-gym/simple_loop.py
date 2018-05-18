@@ -25,31 +25,37 @@ def render():
 
 if __name__ == '__main__':
 
+    # Make and link the registered environment (unscrewing_env.py)
     env = gym.make('gym_unscrewing_env-v0')
 
-    outdir = '/tmp/gazebo_gym_experiments'
+    # Data logging and plotting parameters defined
+    outdir = '/tmp/gym_experiments'
     env = gym.wrappers.Monitor(env, outdir, force=True)
-
     plotter = liveplot.LivePlot(outdir)
 
     last_time_steps = numpy.ndarray(0)
 
+    # Initialise qlearn and define hyperparameters
     qlearn = qlearn.QLearn(actions=range(env.action_space.n),
                     alpha=0.2, gamma=0.8, epsilon=0.9)
 
+    # Epsilon setup:
     initial_epsilon = qlearn.epsilon
-
     epsilon_discount = 0.9986
 
     start_time = time.time()
-    total_episodes = 100
+
+    # Define total amount of episodes
+    total_episodes = 2000
+
     highest_reward = 0
 
+    #For loop for total episodes
     for x in range(total_episodes):
         done = False
+        cumulated_reward = 0
 
-        cumulated_reward = 0 #Should going forward give more reward then L/R ?
-
+        # Reset environment and get the current state after reset.
         observation = env.reset()
 
         if qlearn.epsilon > 0.05:
@@ -59,7 +65,9 @@ if __name__ == '__main__':
 
         state = ''.join(map(str, observation))
 
-        for i in range(1500):
+
+        # Inner loop for total amount of actions per episode
+        for i in range(200):
 
             # Pick an action based on the current state
             action = qlearn.chooseAction(state)
@@ -73,8 +81,10 @@ if __name__ == '__main__':
 
             nextState = ''.join(map(str, observation))
 
+            #Log action, state, reward, and the next state after action.
             qlearn.learn(state, action, reward, nextState)
 
+            # Reset OpenAI environement before new action
             env._flush(force=True)
 
             if not(done):
@@ -83,7 +93,8 @@ if __name__ == '__main__':
                 last_time_steps = numpy.append(last_time_steps, [int(i + 1)])
                 break
 
-        if x % 100 == 0:
+        #Plot rewards every two episodes
+        if x % 2 == 0:
             plotter.plot(env)
 
         m, s = divmod(int(time.time() - start_time), 60)
@@ -99,5 +110,6 @@ if __name__ == '__main__':
     #print("Parameters: a="+str)
     print("Overall score: {:0.2f}".format(last_time_steps.mean()))
     print("Best 100 score: {:0.2f}".format(reduce(lambda x, y: x + y, l[-100:]) / len(l[-100:])))
+    print "highest_reward: ", highest_reward
 
     env.close()

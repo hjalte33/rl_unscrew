@@ -11,8 +11,7 @@ from std_srvs.srv import Trigger
 
 class UnscrewingEnv(gym.Env):
 
-    #metadata = {'render.modes': ['human']}
-
+    #Init function to initialise class and setup topics and services needed
     def __init__(self):
         #Init ros node
         rospy.init_node('Env_setup_node', anonymous=True)
@@ -20,6 +19,7 @@ class UnscrewingEnv(gym.Env):
         #Setup publisher to publish actions
         self.action_pub = rospy.Publisher('/action_move', std_msgs.msg.Int8, queue_size=1)
 
+        #Setup ressoervice to reset robot
         self.reset_robot = rospy.ServiceProxy('/reset_robot', Trigger)
 
         #Robot initializing boundaries and step size
@@ -32,28 +32,33 @@ class UnscrewingEnv(gym.Env):
 
         self._seed()
 
+    #Seed function for updating random generator correctly
     def _seed(self, seed=None):
-        #print "im in _seed"
         self.np_random, seed = seeding.np_random(seed)
         return [seed]
 
+    #Step function which publishes actions and evaluates state/reward
     def step(self, action):
+        #Get the current_pose
         current_pose = None
         while current_pose == None:
             try:
                 current_pose = rospy.wait_for_message('/curr_pose', geometry_msgs.msg.PoseStamped, 1)
             except:
-                print "Couldn't read current position"
+                print "ERROR: Can't read /curr_pose --> trying again.."
 
         #Execute action by publishing action to the topic "/action_move"
         self.action_pub.publish(action)
 
+        #Move_group can't execute actions quickly enough. Delay of 0.5s is needed.
         rospy.sleep(0.5)
 
+        #Get new state after action, and check if episode is done
         state = self.get_state(current_pose, 0)
-
         done = self.is_done(state, current_pose)
 
+
+        #Evaluate rewards depending on if episode is done/not done
         if not done:
             if action == 5:
                 reward = 1
@@ -70,6 +75,7 @@ class UnscrewingEnv(gym.Env):
         return state, reward, done, {}
 
 
+    #Function to call, to check if robot is out of bounds (boundaires defined in __init__)
     def out_of_bounds(self, current_pose):
         if (current_pose.pose.position.x > (self.boundaries['x_high'] - 0.0001)):
             return True
@@ -93,11 +99,16 @@ class UnscrewingEnv(gym.Env):
             return False
 
 
+    # Function to call to get current state. two ways to call it. By knowing
+    # the current pose, then pos_state = 1, if not the function will automatically
+    # get the current_pose, then pos_state = 0.
     def get_state(self, current_pose, pos_state):
         if pos_state == 1:
             x = current_pose.pose.position.x
             y = current_pose.pose.position.y
             z = current_pose.pose.position.z
+            
+            #loop to get force in z direction
             force_z = None
             while force_z == None:
                 try:
@@ -106,6 +117,7 @@ class UnscrewingEnv(gym.Env):
                     print "ERROR: Can't read /FTsensor_topic --> trying again.."
 
         elif pos_state == 0:
+            # Loop to get current pose:
             curr_pos = None
             while curr_pos == None:
                 try:
@@ -117,13 +129,15 @@ class UnscrewingEnv(gym.Env):
             y = curr_pos.pose.position.y
             z = curr_pos.pose.position.z
 
+            # Loop to read force data in z direction:
             force_z = None
             while force_z == None:
                 try:
                     force_z = rospy.wait_for_message('/FTsensor_topic', geometry_msgs.msg.WrenchStamped, timeout=1)
                 except:
                     print "ERROR: Can't read /FTsensor_topic --> trying again.."
-                    
+
+        # Collecting the data read above into a state dict, and returning it  
         state = {}
         state['x'] = x
         state['y'] = y
@@ -131,28 +145,32 @@ class UnscrewingEnv(gym.Env):
         state['force_z'] = force_z.wrench.force.z
         return state
 
-
+    # Function to call to check if episode is done. It is done if max force in z direction
+    # is read to be larger than threshold, or if the manipulator is out of boundaries
+    # It returns True/False depending on whether the episode is done.
     def is_done(self, data, current_pose):
-        #print "im in get_state"
-        #print data
         max_ft = -20
         done = False
         if (max_ft > data['force_z'] or self.out_of_bounds(current_pose) == True):
             done = True
         return done
 
+
+    # Reset function that calls rosservice /reset_robot to reset robot position
     def reset(self):
         print("Reset Simulation")
+        
+        #Call rosservice to reset robot:
         reset_succes = self.reset_robot.call()
         rospy.sleep(1)
-        #print reset_succes, type(reset_succes)
 
+        # Get new pose state after reset and return it.
         current_pose = None
         while current_pose == None:
             try:
                 current_pose = rospy.wait_for_message('/curr_pose', geometry_msgs.msg.PoseStamped, 1)
             except:
-                print "Couldn't read current position"
+                print "ERROR: Can't read /curr_pose --> trying again.."
 
 
         return self.get_state(current_pose, 1) 
