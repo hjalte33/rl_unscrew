@@ -1,7 +1,10 @@
 <?xml version="2.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="my_tool" params="prefix">
+
+  <!-- A macro to create a screw tool. The param "prefix" is not yet implemented -->
+  <xacro:macro name="screw_tool" params="prefix">
+  
     <!-- include the ft-sensor -->
     <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/screw_tool/ft_sensor.urdf"/>
 
