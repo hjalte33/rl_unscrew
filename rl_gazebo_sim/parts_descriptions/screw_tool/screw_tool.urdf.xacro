@@ -3,10 +3,10 @@
 
   <xacro:macro name="my_tool" params="prefix">
     <!-- include the ft-sensor -->
-    <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/urdf/ft_sensor.urdf"/>
+    <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/screw_tool/ft_sensor.urdf"/>
 
     <!-- Include the drill and mount -->
-    <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/urdf/drill.urdf"/> 
+    <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/screw_tool/drill.urdf"/> 
 
     <!-- Add the drill to the ft_sensor -->
     <joint name="ft_sensor_drill_joint" type="fixed">
@@ -33,7 +33,7 @@
 
 
     <!-- include the screw bit-->
-    <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/urdf/ScrewDriverBitStar.urdf"/>
+    <xacro:include filename="$(find rl_gazebo_sim)/parts_descriptions/screw_tool/ScrewDriverBit.urdf"/>
 
     <!-- add the screw bit to the screw machine-->
     <joint name="drill_ScrewDriverBitStar_joint" type="revolute">
