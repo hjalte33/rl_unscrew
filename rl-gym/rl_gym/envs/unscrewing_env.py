@@ -24,7 +24,7 @@ class UnscrewingEnv(gym.Env):
 
         #Robot initializing boundaries and step size
         self.step_size = 0.01
-        self.boundaries = {'x_low': 0.45, 'x_high': 0.55, 'y_low': -0.05, 'y_high': 0.05, 'z_low': 0.022, 'z_high': 0.04}
+        self.boundaries = {'x_low': 0.478915, 'x_high': 0.521085, 'y_low': -0.021225, 'y_high': 0.021225, 'z_low': 0.02, 'z_high': 0.04}
 
         #Define actions and reward range
         self.action_space = spaces.Discrete(6) #x+, x-, y+, y-, z+, z-, (add when unscrewing is an action too)
@@ -60,17 +60,15 @@ class UnscrewingEnv(gym.Env):
 
         #Evaluate rewards depending on if episode is done/not done
         if not done:
-            if action == 5:
-                reward = 1
-            else:
-                reward = 0
+            reward = 0
 
         else:
             if (self.out_of_bounds(current_pose) == True):
-                reward = -200
+                reward = -10
             else:
-                reward = 100
-                reward += 2.5/(current_pose.pose.position.z)
+                reward = 10
+                reward += 1/(current_pose.pose.position.z)
+                
 
         return state, reward, done, {}
 
@@ -149,7 +147,7 @@ class UnscrewingEnv(gym.Env):
     # is read to be larger than threshold, or if the manipulator is out of boundaries
     # It returns True/False depending on whether the episode is done.
     def is_done(self, data, current_pose):
-        max_ft = -20
+        max_ft = -5
         done = False
         if (max_ft > data['force_z'] or self.out_of_bounds(current_pose) == True):
             done = True

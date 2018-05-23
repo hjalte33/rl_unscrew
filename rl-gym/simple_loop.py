@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
     # Initialise qlearn and define hyperparameters
     qlearn = qlearn.QLearn(actions=range(env.action_space.n),
-                    alpha=0.2, gamma=0.8, epsilon=0.9)
+                    alpha=0.3, gamma=0.8, epsilon=0.9)
 
     # Epsilon setup:
     initial_epsilon = qlearn.epsilon

@@ -38,70 +38,42 @@ def move_action(action):
 
     #The search space needs to correspend to what's in the boundaries dict
     #boundaries = {'x_low': 0.496, 'x_high': 0.498, 'y_low': 0.003, 'y_high': 0.005, 'z_low': 0.0055, 'z_high': 0.0075}
-    boundaries = {'x_low': 0.300, 'x_high': 0.600, 'y_low': 0.003, 'y_high': 0.400, 'z_low': 0.005, 'z_high': 0.300}
+    #boundaries = {'x_low': 0.300, 'x_high': 0.600, 'y_low': 0.003, 'y_high': 0.400, 'z_low': 0.005, 'z_high': 0.300}
 
     #Get the current posistion
     current_pose = group.get_current_pose()
 
     #6 different move actions. if statements to check which one is wanted.
-    #Action 0: move step_size in x direction
-    #Action 1: move step_size in -x direction
-    #Action 2: move step_size in y direction
-    #Action 3: move step_size in -y direction
-    #Action 4: move step_size in z direction
-    #Action 5: move step_size in -z direction
+    #Action 0: move step_size in x+ direction
+    #Action 1: move step_size in x- direction
+    #Action 2: move step_size in y+ direction
+    #Action 3: move step_size in y- direction
+    #Action 4: move step_size in z+ direction
+    #Action 5: move step_size in z- direction
 
     if action.data == 0:
-        
-        #makes sure that if executing this action, that the robot does not get out of the workspace. If so, return False.
-        if (current_pose.pose.position.x > (boundaries['x_high'] - 0.0001)):
-            print "Out of bounds"
-            #return False
-        
-        #If the robot is clear to go, the x position is increased by the step_size.
-        else:
-            current_pose.pose.position.x = current_pose.pose.position.x + step_size
-            move(current_pose)
+        current_pose.pose.position.x = current_pose.pose.position.x + step_size
+        move(current_pose)
 
     elif action.data == 1:
-        if (current_pose.pose.position.x < (boundaries['x_low'] + 0.0001)):
-            print "Out of bounds"
-            #return False
-        else: 
-            current_pose.pose.position.x = current_pose.pose.position.x - step_size
-            move(current_pose)
+        current_pose.pose.position.x = current_pose.pose.position.x - step_size
+        move(current_pose)
 
     elif action.data == 2:
-        if (current_pose.pose.position.y > (boundaries['y_high'] - 0.0001)):
-            print "Out of bounds"
-            #return False
-        else: 
-            current_pose.pose.position.y = current_pose.pose.position.y + step_size
-            move(current_pose)
+        current_pose.pose.position.y = current_pose.pose.position.y + step_size
+        move(current_pose)
 
     elif action.data == 3:
-        if (current_pose.pose.position.y < (boundaries['y_low'] + 0.0001)):
-            print "Out of bounds"
-            #return False
-        else: 
-            current_pose.pose.position.y = current_pose.pose.position.y - step_size
-            move(current_pose)
+        current_pose.pose.position.y = current_pose.pose.position.y - step_size
+        move(current_pose)
 
     elif action.data == 4:
-        if (current_pose.pose.position.z > (boundaries['z_high'] - 0.0001)):
-            print "Out of bounds"
-            #return False
-        else: 
-            current_pose.pose.position.z = current_pose.pose.position.z + step_size
-            move(current_pose)
+        current_pose.pose.position.z = current_pose.pose.position.z + step_size
+        move(current_pose)
 
     elif action.data == 5:
-        if (current_pose.pose.position.z < (boundaries['z_low'] + 0.0001)):
-            print "Out of bounds"
-            #return False
-        else: 
-            current_pose.pose.position.z = current_pose.pose.position.z - step_size
-            move(current_pose)
+        current_pose.pose.position.z = current_pose.pose.position.z - step_size
+        move(current_pose)
 
     #Returns the pose after the action has been accounted for
     #return current_pose
