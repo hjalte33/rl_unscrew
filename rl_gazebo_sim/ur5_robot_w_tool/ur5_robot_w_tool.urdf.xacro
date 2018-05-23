@@ -20,7 +20,7 @@
   <xacro:ur5_robot prefix="" joint_limited="true"/>
 
   <!-- create the tool macro-->
-  <xacro:my_tool prefix=""/>
+  <xacro:screw_tool prefix=""/>
 
   <!--dont reduce the fixed joint -->
     <gazebo reference="ee_fixed_joint">

@@ -31,7 +31,7 @@
   />   <!-- respawn = false means dont respawn the spawner node again. -->   
 
   <!-- load the joint_state_controller to the parameter server-->
-  <rosparam file="$(find rl_gazebo_sim)/controller/ur5_controller.yaml" command="load"/>
+  <rosparam file="$(find rl_gazebo_sim)/ur5_robot_w_tool/ur5_controller.yaml" command="load"/>
   <!-- start_controllers -->
   <node name="joint_state_controller_spawner" pkg="controller_manager" type="spawner" 
         args="joint_state_controller arm_controller screw_controller" respawn="false" />
