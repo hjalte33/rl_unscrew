@@ -17,9 +17,17 @@
     <arg name="publish_monitored_planning_scene" value="true" />
   </include>
   
+  <!--
   <include file="$(find rl_moveit_config)/launch/moveit_rviz.launch">
     <arg name="config" value="true"/>
   </include>
+  -->
+
+  <node name="curr_pose_publisher" pkg="rl_moveit" type="current_pose_publisher.py">
+  </node>
+
+  <node name="action_subscriber" pkg="rl_moveit" type="planning_script.py">
+  </node>
 
 </launch>
 
