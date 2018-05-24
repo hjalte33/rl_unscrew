@@ -29,5 +29,8 @@
   <node name="action_subscriber" pkg="rl_moveit" type="planning_script.py">
   </node>
 
+  <node name="action_subscriber_screwing" pkg="rl_moveit" type="screw_control.py">
+  </node>
+
 </launch>
 

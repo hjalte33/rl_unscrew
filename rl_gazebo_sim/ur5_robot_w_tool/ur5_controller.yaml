@@ -24,7 +24,7 @@ arm_controller:
     wrist_3_joint: {trajectory: 0.1, goal: 0.1}
 
 screw_controller:
-  type: velocity_controllers/JointTrajectoryController
+  type: position_controllers/JointTrajectoryController
   joints:
     - drill_ScrewDriverBitStar_joint
   gains:

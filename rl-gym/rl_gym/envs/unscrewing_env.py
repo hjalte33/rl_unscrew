@@ -67,7 +67,7 @@ class UnscrewingEnv(gym.Env):
                 reward = -10
             else:
                 reward = 10
-                reward += 1/(current_pose.pose.position.z)
+                reward += 1.5/(current_pose.pose.position.z)
                 
 
         return state, reward, done, {}
