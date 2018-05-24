@@ -19,16 +19,18 @@ class UnscrewingEnv(gym.Env):
         #Setup publisher to publish actions
         self.action_pub = rospy.Publisher('/action_move', std_msgs.msg.Int8, queue_size=1)
 
-        #Setup ressoervice to reset robot
+        #Setup rosservice to reset robot
         self.reset_robot = rospy.ServiceProxy('/reset_robot', Trigger)
 
         #Robot initializing boundaries and step size
-        self.step_size = 0.01
+        #self.step_size = 0.01
         self.boundaries = {'x_low': 0.478915, 'x_high': 0.521085, 'y_low': -0.021225, 'y_high': 0.021225, 'z_low': 0.02, 'z_high': 0.04}
 
         #Define actions and reward range
-        self.action_space = spaces.Discrete(6) #x+, x-, y+, y-, z+, z-, (add when unscrewing is an action too)
+        self.action_space = spaces.Discrete(7) #x+, x-, y+, y-, z+, z-, (add when unscrewing is an action too)
         self.reward_range = (-np.inf, np.inf)
+
+        self.screw_touch_state = False
 
         self._seed()
 
@@ -57,17 +59,32 @@ class UnscrewingEnv(gym.Env):
         state = self.get_state(current_pose, 0)
         done = self.is_done(state, current_pose)
 
-
+        
         #Evaluate rewards depending on if episode is done/not done
         if not done:
-            reward = 0
+            if state['z'] < 0.295:
+                self.screw_touch_state = True
+
+            if state['force_z'] < 0 and action == 6:
+                reward = 2
+
+            elif action == 5:
+                reward = 1
+
+            else:
+                reward = 0
 
         else:
             if (self.out_of_bounds(current_pose) == True):
                 reward = -10
             else:
-                reward = 10
-                reward += 1.5/(current_pose.pose.position.z)
+                if self.screw_touch_state == True:
+                    reward = 30
+                    reward += 2*state['z']
+
+                else:
+                    reward = 10
+                    reward += 1.5/(current_pose.pose.position.z)
                 
 
         return state, reward, done, {}
@@ -147,7 +164,7 @@ class UnscrewingEnv(gym.Env):
     # is read to be larger than threshold, or if the manipulator is out of boundaries
     # It returns True/False depending on whether the episode is done.
     def is_done(self, data, current_pose):
-        max_ft = -5
+        max_ft = -10
         done = False
         if (max_ft > data['force_z'] or self.out_of_bounds(current_pose) == True):
             done = True
@@ -157,6 +174,8 @@ class UnscrewingEnv(gym.Env):
     # Reset function that calls rosservice /reset_robot to reset robot position
     def reset(self):
         print("Reset Simulation")
+
+        self.screw_touch_state = False
         
         #Call rosservice to reset robot:
         reset_succes = self.reset_robot.call()

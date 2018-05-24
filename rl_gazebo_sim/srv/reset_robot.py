@@ -74,7 +74,7 @@ class RobotReset ():
         
         # Dict describing the joint states for the robot in home position. 
         # Joint target to reset to just above screw
-        '''
+        
         joint_target = {'shoulder_pan_joint' : -0.219421051071226,
                         'shoulder_lift_joint': -1.4877301174597237,
                         'elbow_joint'       : 1.9075886985532051,
@@ -89,7 +89,7 @@ class RobotReset ():
                         'wrist_1_joint'     : -1.9919776630124097,
                         'wrist_2_joint'     : -1.5712127876636952,
                         'wrist_3_joint'     : -0.09724737704377517 }
-        
+        '''
         print('The joint target is: %s' % joint_target)
         
         #send the position to the group object
