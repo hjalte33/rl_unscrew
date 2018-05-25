@@ -68,9 +68,6 @@ class UnscrewingEnv(gym.Env):
             if state['force_z'] < 0 and action == 6:
                 reward = 2
 
-            elif action == 5:
-                reward = 1
-
             else:
                 reward = 0
 
@@ -80,7 +77,7 @@ class UnscrewingEnv(gym.Env):
             else:
                 if self.screw_touch_state == True:
                     reward = 30
-                    reward += 2*state['z']
+                    reward += 3000*state['z']
 
                 else:
                     reward = 10
@@ -114,6 +111,17 @@ class UnscrewingEnv(gym.Env):
             return False
 
 
+    def discretise_data(self, state):
+        newstate = {}
+        newstate['x'] = round(state['x'], 4)
+        newstate['y'] = round(state['y'], 4)
+        newstate['z'] = round(state['z'], 4)
+        newstate['force_z'] = round(state['force_z'], 1)
+        newstate['screw_joint_value'] = round(state['screw_joint_value'], 3)
+
+        return newstate
+
+
     # Function to call to get current state. two ways to call it. By knowing
     # the current pose, then pos_state = 1, if not the function will automatically
     # get the current_pose, then pos_state = 0.
@@ -122,14 +130,6 @@ class UnscrewingEnv(gym.Env):
             x = current_pose.pose.position.x
             y = current_pose.pose.position.y
             z = current_pose.pose.position.z
-            
-            #loop to get force in z direction
-            force_z = None
-            while force_z == None:
-                try:
-                    force_z = rospy.wait_for_message('/FTsensor_topic', geometry_msgs.msg.WrenchStamped, timeout=1)
-                except:
-                    print "ERROR: Can't read /FTsensor_topic --> trying again.."
 
         elif pos_state == 0:
             # Loop to get current pose:
@@ -138,19 +138,26 @@ class UnscrewingEnv(gym.Env):
                 try:
                     curr_pos = rospy.wait_for_message('/curr_pose', geometry_msgs.msg.PoseStamped, timeout=1)
                 except:
-                    print "ERROR: Can't read /curr_pose --> trying again.."
+                    print "ERROR: Couldn't read /curr_pose --> trying again.."
 
             x = curr_pos.pose.position.x
             y = curr_pos.pose.position.y
             z = curr_pos.pose.position.z
 
-            # Loop to read force data in z direction:
-            force_z = None
-            while force_z == None:
-                try:
-                    force_z = rospy.wait_for_message('/FTsensor_topic', geometry_msgs.msg.WrenchStamped, timeout=1)
-                except:
-                    print "ERROR: Can't read /FTsensor_topic --> trying again.."
+        #loop to get force in z direction
+        force_z = None
+        while force_z == None:
+            try:
+                force_z = rospy.wait_for_message('/FTsensor_topic', geometry_msgs.msg.WrenchStamped, timeout=1)
+            except:
+                print "ERROR: Couldn't read /FTsensor_topic --> trying again.."
+
+        screw_joint_value = None
+        while screw_joint_value == None:
+            try:
+                screw_joint_value = rospy.wait_for_message('/screw_joint_value', std_msgs.msg.Float32, timeout=1)
+            except:
+                print "ERROR: Couldn't read /screw_joint_value topic --> trying again.."
 
         # Collecting the data read above into a state dict, and returning it  
         state = {}
@@ -158,7 +165,8 @@ class UnscrewingEnv(gym.Env):
         state['y'] = y
         state['z'] = z
         state['force_z'] = force_z.wrench.force.z
-        return state
+        state['screw_joint_value'] = screw_joint_value.data
+        return self.discretise_data(state)
 
     # Function to call to check if episode is done. It is done if max force in z direction
     # is read to be larger than threshold, or if the manipulator is out of boundaries

@@ -32,5 +32,8 @@
   <node name="action_subscriber_screwing" pkg="rl_moveit" type="screw_control.py">
   </node>
 
+  <node name="curr_joint_value_publisher" pkg="rl_moveit" type="current_screw_joint_publisher.py">
+  </node>
+
 </launch>
 

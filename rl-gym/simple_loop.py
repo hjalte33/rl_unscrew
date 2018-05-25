@@ -27,6 +27,7 @@ if __name__ == '__main__':
 
     # Make and link the registered environment (unscrewing_env.py)
     env = gym.make('gym_unscrewing_env-v0')
+    env._max_episode_steps = 200
 
     # Data logging and plotting parameters defined
     outdir = '/tmp/gym_experiments'
