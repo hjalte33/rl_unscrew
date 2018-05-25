@@ -44,7 +44,7 @@
       <parent link="drill"/>
       <child link="ScrewDriverBitStar"/>
       <axis xyz="0 0 1"/>
-      <limit velocity="1000" effort="1" lower="-100" upper="100"/>     
+      <limit velocity="1000" effort="1" lower="-1000" upper="1000"/>     
       </joint>
 
     <!-- Frame coincident with the tip of the screw driver bit -->
@@ -68,7 +68,7 @@
     <transmission name="screw_tool_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="drill_ScrewDriverBitStar_joint">
-        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
       </joint>
       <actuator name="screw_motor">
         <mechanicalReduction>1</mechanicalReduction>
