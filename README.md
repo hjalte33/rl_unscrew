@@ -11,7 +11,7 @@ The framework is designed and prepared for screwing tasks meanning the simulated
 ## About
 This is repository is by as a 6th semester project at Aalborg University.
 
-# Installation
+## Installation
 Install ROS Kinetic following [this guide](http://wiki.ros.org/kinetic/Installation/Ubuntu) from the ROS wiki.  
 Install ROS dependencies
 ```bash
@@ -54,7 +54,7 @@ catkin build
 source devel/setup.bash
 ```
 
-# Launch example aplication
+## Launch example aplication
 In order to launch the framework three things must be launched. First the Gazebo simulation.
 ```bash
 roslaunch rl_gazebo_sim rl_world.launch
