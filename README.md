@@ -7,7 +7,7 @@ The framework is designed and prepared for screwing tasks meanning the simulated
 This is repository is by as a 6th semester project at Aalborg University.
 
 # Installation
-Install ROS Kinetic following [the guide](http://wiki.ros.org/kinetic/Installation/Ubuntu) from the ROS wiki.
+Install ROS Kinetic following [this guide](http://wiki.ros.org/kinetic/Installation/Ubuntu) from the ROS wiki.
 
 Install ROS dependencies
 ```bash
@@ -50,4 +50,19 @@ catkin build
 source devel/setup.bash
 ```
 
-# Usage
+# Lanch example aplication
+In order to launch the framework three things must be launched. First the Gazebo simulation.
+```bash
+roslaunch rl_gazebo_sim rl_world.launch
+```
+
+Then launch the controller
+```bash
+roslaunch rl_moveit_config moveit_planning_execution.launch
+```
+
+Now the framework is ready to be used. In order to launch the example aplication run the following python script.
+```
+python  ~/catkin_ws/src/rl_project/rl_gym/simple_loop.py
+```
+You shold now be running a simple Q-learning algorithm 
