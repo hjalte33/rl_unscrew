@@ -4,16 +4,15 @@ A reinforcement-Learning Framework for testing learning agents on a UR5 manipula
 The framework is designed and prepared for screwing tasks meanning the simulated UR5 is fitted with a screw tool and the world is fitted with a block with a screw.
 
 ## Content
-[About](##about)
-[Installation](#installation)
-[Lanch example aplication](#launch-example-aplication)
+[About](#about)  
+[Installation](#installation)  
+[Launch example aplication](#launch-example-aplication)  
 
-## [About](##about)
+## About
 This is repository is by as a 6th semester project at Aalborg University.
 
-# [Installation](#installation)
-Install ROS Kinetic following [this guide](http://wiki.ros.org/kinetic/Installation/Ubuntu) from the ROS wiki.
-
+# Installation
+Install ROS Kinetic following [this guide](http://wiki.ros.org/kinetic/Installation/Ubuntu) from the ROS wiki.  
 Install ROS dependencies
 ```bash
 sudo apt -get  install  python -rosinstall  python -rosinstall -generator  python -wstool  build -essential
@@ -55,7 +54,7 @@ catkin build
 source devel/setup.bash
 ```
 
-# [Lanch example aplication](#launch-example-aplication)
+# Launch example aplication
 In order to launch the framework three things must be launched. First the Gazebo simulation.
 ```bash
 roslaunch rl_gazebo_sim rl_world.launch
