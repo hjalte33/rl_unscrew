@@ -13,8 +13,6 @@ import rl_gym
 import qlearn
 import liveplot
 
-# THIS IS A TEST - DOES IT STILL WORK???
-
 
 def render():
     render_skip = 0 #Skip first X episodes.
