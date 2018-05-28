@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     # Initialise qlearn and define hyperparameters
     qlearn = qlearn.QLearn(actions=range(env.action_space.n),
-                    alpha=0.3, gamma=0.8, epsilon=0.9)
+                    alpha=0.2, gamma=0.85, epsilon=0.9)
 
     # Epsilon setup:
     initial_epsilon = qlearn.epsilon
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     start_time = time.time()
 
     # Define total amount of episodes
-    total_episodes = 2000
+    total_episodes = 1000
 
     highest_reward = 0
 

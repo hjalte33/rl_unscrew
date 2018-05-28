@@ -53,7 +53,7 @@ class UnscrewingEnv(gym.Env):
         self.action_pub.publish(action)
 
         #Move_group can't execute actions quickly enough. Delay of 0.5s is needed.
-        rospy.sleep(0.5)
+        rospy.sleep(0.25)
 
         #Get new state after action, and check if episode is done
         state = self.get_state(current_pose, 0)
@@ -62,7 +62,7 @@ class UnscrewingEnv(gym.Env):
         
         #Evaluate rewards depending on if episode is done/not done
         if not done:
-            if state['z'] < 0.295:
+            if state['z'] < 0.0295:
                 self.screw_touch_state = True
 
             if state['force_z'] < 0 and action == 6:
