@@ -52,4 +52,3 @@ void loop()
   nh.spinOnce();    // All ROS communication callbacks are handled here
   delay(1);
 }
-
