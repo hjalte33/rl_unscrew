@@ -44,7 +44,7 @@ Clone this repository as well as the universal_robot repository containing all t
 ```bash
 cd ~/catkin_ws/src
 git clone https://github.com/ros-industrial/universal_robot.git
-git clone https://github.com/hjalte33/rl_project.git
+git clone https://github.com/hjalte33/rl_unscrew.git
 ```
 
 run catkin build to build all the packages, and dont forget to sorce the workspcae. 
