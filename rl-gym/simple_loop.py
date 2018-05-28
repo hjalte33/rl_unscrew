@@ -13,6 +13,9 @@ import rl_gym
 import qlearn
 import liveplot
 
+# THIS IS A TEST - DOES IT STILL WORK???
+
+
 def render():
     render_skip = 0 #Skip first X episodes.
     render_interval = 50 #Show render Every Y episodes.
