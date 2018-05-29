@@ -11,8 +11,11 @@ from std_srvs.srv import Trigger
 
 class UnscrewingEnv(gym.Env):
 
-    #Init function to initialise class and setup topics and services needed
     def __init__(self):
+        """
+        Init function to initialise class and setup topics and services needed.
+        """
+
         #Init ros node
         rospy.init_node('Env_setup_node', anonymous=True)
 
@@ -34,13 +37,33 @@ class UnscrewingEnv(gym.Env):
 
         self._seed()
 
-    #Seed function for updating random generator correctly
+
     def _seed(self, seed=None):
+        """
+        Seed function for updating random generator correctly.
+
+        Args:
+            seed: default set to None.
+
+        Returns:
+            [seed]
+        """
+
         self.np_random, seed = seeding.np_random(seed)
         return [seed]
 
-    #Step function which publishes actions and evaluates state/reward
     def step(self, action):
+        """
+        Step function which publishes actions and evaluates state/reward.
+
+        Args:
+            action: takes an action (Int) as input. Value from 0-6
+
+        Returns:
+            State after executed action, reward after executed action and done, 
+            which is a bool, True or False depending on if episode is done.
+        """
+
         #Get the current_pose
         current_pose = None
         while current_pose == None:
@@ -87,8 +110,16 @@ class UnscrewingEnv(gym.Env):
         return state, reward, done, {}
 
 
-    #Function to call, to check if robot is out of bounds (boundaires defined in __init__)
     def out_of_bounds(self, current_pose):
+        """
+        Function to call, to check if robot is out of bounds (boundaires defined in __init__)
+        
+        Args:
+            current_pose: Takes the current pose as input. Datatype: Geometry_msgs.msg.PoseStamped
+
+        Returns:
+            Returns True or False, depending on, if the robot is outside or inside the boundaries in __init__()
+        """
         if (current_pose.pose.position.x > (self.boundaries['x_high'] - 0.0001)):
             return True
 
@@ -112,6 +143,15 @@ class UnscrewingEnv(gym.Env):
 
 
     def discretise_data(self, state):
+        """
+        This function discretises the state values.
+
+        Args:
+            Takes a state as input in a dict
+
+        Returns:
+            A discretised state. Same state as input just cut off decimals to discretise.
+        """
         newstate = {}
         newstate['x'] = round(state['x'], 4)
         newstate['y'] = round(state['y'], 4)
@@ -122,10 +162,17 @@ class UnscrewingEnv(gym.Env):
         return newstate
 
 
-    # Function to call to get current state. two ways to call it. By knowing
-    # the current pose, then pos_state = 1, if not the function will automatically
-    # get the current_pose, then pos_state = 0.
     def get_state(self, current_pose, pos_state):
+        """
+        Function to call to get current state. 
+        
+        Args:
+            current_pose: Takes the current pose as input. Datatype: Geometry_msgs.msg.PoseStamped
+            pos_state: If current_pose is known set to 1, if not known or not updated set to 0
+
+        Returns:
+            Returns the current state of the system at the time of calling the function.
+        """
         if pos_state == 1:
             x = current_pose.pose.position.x
             y = current_pose.pose.position.y
@@ -168,25 +215,50 @@ class UnscrewingEnv(gym.Env):
         state['screw_joint_value'] = screw_joint_value.data
         return self.discretise_data(state)
 
-    # Function to call to check if episode is done. It is done if max force in z direction
-    # is read to be larger than threshold, or if the manipulator is out of boundaries
-    # It returns True/False depending on whether the episode is done.
-    def is_done(self, data, current_pose):
+    
+    def is_done(self, state, current_pose):
+        """
+        Function to call to check if episode is done. It is done if max force in z direction
+        is read to be larger than threshold, or if the manipulator is out of boundaries.
+
+        Args:
+            state: current state of the system
+            current_pose: Takes the current pose as input. Datatype: Geometry_msgs.msg.PoseStamped
+
+        Returns:
+            It returns True/False depending on whether the episode is done.
+        """
+
         max_ft = -10
         done = False
-        if (max_ft > data['force_z'] or self.out_of_bounds(current_pose) == True):
+        if (max_ft > state['force_z'] or self.out_of_bounds(current_pose) == True):
             done = True
         return done
 
 
-    # Reset function that calls rosservice /reset_robot to reset robot position
     def reset(self):
+        """
+        Reset function that calls rosservice /reset_robot to reset environment and robot position
+        
+        Args:
+            None
+
+        Returns:
+            state of the system after reset of the robot and environment.
+        """
+
         print("Reset Simulation")
 
         self.screw_touch_state = False
         
         #Call rosservice to reset robot:
-        reset_succes = self.reset_robot.call()
+        reset_succes = None
+        while reset_succes == None:
+            try:
+                reset_succes = self.reset_robot.call()
+            except:
+                print "Couldn't reset the simulation --> trying again..."
+
         rospy.sleep(1)
 
         # Get new pose state after reset and return it.
@@ -198,4 +270,4 @@ class UnscrewingEnv(gym.Env):
                 print "ERROR: Can't read /curr_pose --> trying again.."
 
 
-        return self.get_state(current_pose, 1) 
+        return self.get_state(current_pose, 0) 
