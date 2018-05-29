@@ -27,7 +27,7 @@ class UnscrewingEnv(gym.Env):
         self.boundaries = {'x_low': 0.478915, 'x_high': 0.521085, 'y_low': -0.021225, 'y_high': 0.021225, 'z_low': 0.02, 'z_high': 0.04}
 
         #Define actions and reward range
-        self.action_space = spaces.Discrete(7) #x+, x-, y+, y-, z+, z-, (add when unscrewing is an action too)
+        self.action_space = spaces.Discrete(7) #x+, x-, y+, y-, z+, z-, unscrewing
         self.reward_range = (-np.inf, np.inf)
 
         self.screw_touch_state = False
