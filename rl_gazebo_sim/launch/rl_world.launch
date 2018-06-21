@@ -53,7 +53,9 @@
       <!-- Start all the controllers from the ur5_controller.yaml file.-->
       <node name="joint_state_controller_spawner" pkg="controller_manager" type="spawner" 
             args="joint_state_controller arm_controller screw_controller" respawn="false" />
-      <node pkg="rl_gazebo_sim" type="reset_robot.py" name="reset_robot_service_spawner" output="screen"/> 
+   
+      <!-- Launch the reset service. -->
+      <!-- <node pkg="rl_gazebo_sim" type="reset_robot.py" name="reset_robot_service_spawner" output="screen"/>  -->
 
 </launch>
 
