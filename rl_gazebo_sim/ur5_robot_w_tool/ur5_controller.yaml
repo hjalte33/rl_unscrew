@@ -1,4 +1,4 @@
-joint_names: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint]
+joint_names: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint,drill_ScrewDriverBitStar_joint]
 
 joint_state_controller:
   type: joint_state_controller/JointStateController
