@@ -21,13 +21,16 @@ class RobotReset ():
         self.robot = moveit_commander.RobotCommander()
         
         # Creating a MoveGroupCommander object, which is an interface to the manipulator group of joints 
-        try:
-            self.group = moveit_commander.MoveGroupCommander("arm")
-        except Exception as e:
-            # If the movegroup is not ready yet wait 1 sec and try again. 
-            print(e)
-            print('trying again in 1 sec')
-            rospy.sleep(1)
+        self.group = None
+        while self.group == None:
+            try:
+                self.group = moveit_commander.MoveGroupCommander("arm")
+            except Exception as e:
+                # If the movegroup is not ready yet wait 1 sec and try again. 
+                print(e)
+                print('trying again in 1 sec')
+                rospy.sleep(1)
+        
 
         self.pauser_srv = rospy.ServiceProxy('/gazedo/pause_physics', Empty)
 
