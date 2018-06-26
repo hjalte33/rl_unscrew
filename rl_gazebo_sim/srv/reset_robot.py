@@ -21,7 +21,13 @@ class RobotReset ():
         self.robot = moveit_commander.RobotCommander()
         
         # Creating a MoveGroupCommander object, which is an interface to the manipulator group of joints 
-        self.group = moveit_commander.MoveGroupCommander("arm")
+        try:
+            self.group = moveit_commander.MoveGroupCommander("arm")
+        except Exception as e:
+            # If the movegroup is not ready yet wait 1 sec and try again. 
+            print(e)
+            print('trying again in 1 sec')
+            rospy.sleep(1)
 
         self.pauser_srv = rospy.ServiceProxy('/gazedo/pause_physics', Empty)
 
@@ -109,48 +115,7 @@ class RobotReset ():
         #return true to indicate success
         return [True,'succeded resetting the robot.']
 
-    def reset_func_respawner(self, req):
-        """Function respawns the robot upon reset call.
-        This way of resetting the robot seems to break the controller.
-        TODO find a way to fix this, maybe by relaunching the controllers. 
-        
-        Arguments:
-            req {req} -- Input from service call. Not used.
-        """
 
-        print('Pausing')
-        self.pauser_srv.call()
-        time.sleep(1)
-
-        # print('Stopping controllers')
-        # controller_switcher = rospy.ServiceProxy('controller_manager/switch_controller',SwitchController)
-        # controller_switcher.call([], ["arm_controller","joint_state_controller","screw_controller"], 1)
-        # time.sleep(1)
-
-        print('Removing current robot')
-        self.destroyer.call(self.robot_name)
-
-        print('Spawning a new robot')
-        self.spawner.call(self.robot_name, self.robot_urdf, "", self.robot_pose, "world")
-        time.sleep(3)
-
-        print('Setting joint values to home position')
-        self.set_joints.call(self.robot_name, "robot_description", ["shoulder_pan_joint","shoulder_lift_joint","elbow_joint","wrist_1_joint","wrist_2_joint","wrist_3_joint"], [0, -1.5707, 1.5707, -1.5707, -1.5707, 0])
-        time.sleep(1)
-
-        print('Reset world')
-        self.reset_world_srv.call()
-        
-        print('Reset simulaiton')
-        self.reset_simulation_srv.call()
-        
-        print('Unpause')
-        self.unpauser_srv.call()
-        time.sleep(1)
-
-        # print('Starting controllers again')
-        # controller_switcher.call(["arm_controller","joint_state_controller","screw_controller"], [], 1)
-            
 
 
 if __name__ == "__main__":
